@@ -41,7 +41,7 @@ val Course.context: Context get() =
             text(":point__left: ")
             reference("../../week-${prev.code}/info/top")
             }
-          text(" :large__blue__diamond: ")
+          reference("../../course-info/top", title = " :point__up: ")
           week.next?.let { next ->
             reference("../../week-${next.code}/info/top")
             text(" :point__right:")
