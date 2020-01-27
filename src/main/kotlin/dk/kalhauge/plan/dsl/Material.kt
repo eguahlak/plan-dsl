@@ -30,7 +30,7 @@ fun Lecture.presentation(
       Material.Category.PRESENTATION,
       toFront = true,
       active = true
-      )
+      ).also(build)
 
 fun Lecture.exercise(
     path: String,
@@ -44,7 +44,7 @@ fun Lecture.exercise(
       Material.Category.EXERCISE,
       toFront = false,
       active = true
-      )
+      ).also(build)
 
 fun Lecture.repository(
     address: Address,
@@ -57,7 +57,7 @@ fun Lecture.repository(
       Material.Category.REPOSITORY,
       toFront = true,
       active = true
-      )
+      ).also(build)
 
 fun Lecture.material(
     address: Address,
@@ -70,4 +70,4 @@ fun Lecture.material(
       Material.Category.LOCAL,
       toFront = false,
       active = true
-      )
+      ).also(build)

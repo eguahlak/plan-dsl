@@ -9,7 +9,8 @@ import dk.kalhauge.plan.dsl.engine.context
 val AKA = Teacher("AKA", "Anders Kalhauge", "21724411")
 val TDI = Teacher("TDI", "Todorka Stoyanova Dimitrova", null)
 
-
+val conf = Configuration(hasNumbers = true, hasTitle = true)
+val resourcesRoot = conf["resources.root"]
 fun main() {
   val course = course("Algorithms and Datastructures", spring(2020), "ALG") {
     // https://www.cphbusiness.dk/media/78341/pba_soft_cba_studieordning_2017.pdf
@@ -41,8 +42,8 @@ fun main() {
           read("Chapter 1", 1.0)
           write("Small assignment", 2.0)
           repository(Address("https://github.com/eguahlak/plan-dsl.git"))
-          presentation("/Users/AKA/tmp/resources/sas5.pdf", "Something", label = "SAS")
-          exercise("/Users/AKA/tmp/resources/sas5.pdf", name = "ex1.pdf", title = "Exercise 1")
+          presentation("$resourcesRoot/sas5.pdf", "Something", label = "SAS")
+          exercise("$resourcesRoot/sas5.pdf", name = "ex1.pdf", title = "Exercise 1")
         }
         lecture("Big oh") {
           teachers(AKA, TDI)
@@ -55,7 +56,7 @@ fun main() {
             target = cached("/Users/AKA/tmp/resources/assignment-1.pdf")
             }
           presentation("/Users/AKA/DatSoftLyngby/soft2019fall/docs/DM/week-38/04-regular-languages.pdf", "Regular Languages")
-          exercise("/Users/AKA/tmp/resources/sas5.pdf", "Exercise 2", "exercise2")
+          exercise("$resourcesRoot/sas5.pdf", "Exercise 2", "exercise2")
           }
         lecture("Graphs")
         }
@@ -115,8 +116,7 @@ fun main() {
     exam += "Hello World!, Killroy was here"
     }
 
-  val conf = Configuration(hasNumbers = true, hasTitle = true)
   // val host = FileHost("/Users/AKA/tmp/plan-dsl-test")
-  val host = FileHost()
-  GfmHandler(host, conf, course.context).handle(printRelations = true, printTargets = true)
+  val host = FileHost(conf)
+  GfmHandler(host, course.context).handle(printRelations = true, printTargets = true)
   }

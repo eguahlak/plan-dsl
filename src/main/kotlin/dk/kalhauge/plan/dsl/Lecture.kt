@@ -4,6 +4,9 @@ import dk.kalhauge.document.dsl.Paragraph
 
 class Lecture(val week: Week, val title: String) {
   val teachers = mutableListOf<Teacher>()
+  fun teachers(vararg teachers: Teacher) {
+    teachers.forEach { add(it) }
+    }
   var timeSlot: TimeSlot
   val course get() = week.course
   val number =  course.nextLectureNumber++
