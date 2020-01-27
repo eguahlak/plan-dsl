@@ -14,8 +14,8 @@ repositories {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/eguahlak/document-dsl")
         credentials {
-            username = GITHUB_USER ?: System.getenv("GPR_USER")
-            password = GITHUB_TOKEN ?: System.getenv("GPR_API_KEY")
+            username = System.getenv("GPR_USER") ?: GITHUB_USER
+            password = System.getenv("GPR_API_KEY") ?: GITHUB_TOKEN
         }
     }
 }
