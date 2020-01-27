@@ -5,17 +5,13 @@ import dk.kalhauge.document.dsl.Text
 import dk.kalhauge.document.dsl.text
 
 class Flow(val course: Course, val title: String) {
-  var overview: Paragraph? = null
+  var overview = Paragraph()
   var skills: Text? = null
   val weeks = mutableListOf<Week>()
   val lectures get() = weeks.flatMap { it.lectures }
 
   init {
     course.add(this)
-    }
-
-  fun overview(build: Paragraph.() -> Unit = {}) {
-    overview = Paragraph().also(build)
     }
 
   fun skills(build: Text.() -> Unit = {}) {

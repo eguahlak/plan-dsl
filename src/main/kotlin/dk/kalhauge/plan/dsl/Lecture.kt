@@ -10,12 +10,12 @@ class Lecture(val week: Week, val title: String) {
   val code get() = if (number < 10) "0$number" else "$number"
   var note = " "
   val workLoad: Double get() = activities.map { it.load }.sum() + timeSlot.load
-  var overview: Paragraph? = null
+  var overview = Paragraph()
 
-  var objective: Paragraph? = null
+  var objective = Paragraph()
   val objectives = mutableListOf<Objective>()
 
-  var activity: Paragraph? = null
+  var activity = Paragraph()
   val activities = mutableListOf<Activity>()
 
   val materials = mutableListOf<Material>()
@@ -34,18 +34,6 @@ class Lecture(val week: Week, val title: String) {
   fun add(teacher: Teacher) {
     teachers += teacher
     course.add(teacher)
-    }
-
-  fun overview(build: Paragraph.() -> Unit = {}) {
-    overview = Paragraph().also(build)
-    }
-
-  fun objective(build: Paragraph.() -> Unit = {}) {
-    objective = Paragraph().also(build)
-    }
-
-  fun activity(build: Paragraph.() -> Unit = {}) {
-    activity = Paragraph().also(build)
     }
 
   data class Load(

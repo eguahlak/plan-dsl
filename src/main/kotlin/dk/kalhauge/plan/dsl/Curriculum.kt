@@ -5,7 +5,7 @@ import dk.kalhauge.document.dsl.Text
 import dk.kalhauge.document.dsl.text
 
 class Curriculum(val course: Course, val ects: Int) {
-  var content: Paragraph? = null
+  var content = Paragraph()
   val objectives = mapOf<Taxonomy, MutableList<Objective>>(
     Taxonomy.KNOWLEDGE to mutableListOf(),
     Taxonomy.ABILITY to mutableListOf(),
@@ -17,10 +17,6 @@ class Curriculum(val course: Course, val ects: Int) {
   fun add(objective: Objective) {
     objectives[objective.level]?.add(objective)
     }
-  fun content(build: Paragraph.() -> Unit = {}) {
-    content = Paragraph().also(build)
-    }
-
   fun keyFor(level: Taxonomy) = when (level) {
     Taxonomy.KNOWLEDGE -> "K${(objectives[level]?.size ?: 0) + 1}"
     Taxonomy.ABILITY   -> "A${(objectives[level]?.size ?: 0) + 1}"
