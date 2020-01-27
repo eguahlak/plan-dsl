@@ -29,10 +29,10 @@ class TimeTests {
 
   @Test
   fun testLoadOfTimeSlots() {
-    assertEquals(3.5, TimeSlot(WeekDay.MONDAY, morning).load, delta)
-    assertEquals(3.5, TimeSlot(WeekDay.TUESDAY, afternoon).load, delta)
-    assertEquals("Lunch time is subtracted", 5.0, TimeSlot(WeekDay.WEDNESDAY, workshop).load, delta)
-    assertEquals("Load is overridden", 4.0, TimeSlot(WeekDay.THURSDAY, workshop, 4.0).load, delta)
+    assertEquals(3.5, TimeSlot(WeekDay.MONDAY, morning, CL_103).load, delta)
+    assertEquals(3.5, TimeSlot(WeekDay.TUESDAY, afternoon, CL_103).load, delta)
+    assertEquals("Lunch time is subtracted", 5.0, TimeSlot(WeekDay.WEDNESDAY, workshop, CL_103).load, delta)
+    assertEquals("Load is overridden", 4.0, TimeSlot(WeekDay.THURSDAY, workshop, CL_203, 4.0).load, delta)
     }
 
   }
