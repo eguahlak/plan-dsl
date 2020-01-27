@@ -14,6 +14,9 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Gradle
+      env:
+        GPR_USER: ${{ secrets.GPR_USER }}
+        GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
       run: ./gradlew build
     - name: Publish
       env:
