@@ -5,6 +5,8 @@ import org.junit.Test
 
 class TimeTests {
   val delta = 0.0001
+  val CL_103 = Room("CL-1.03")
+  val CL_203 = Room("CL-2.03")
 
   @Test
   fun testTimeOfDayToDouble() {

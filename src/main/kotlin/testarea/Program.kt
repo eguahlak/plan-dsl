@@ -11,6 +11,7 @@ val TDI = Teacher("TDI", "Todorka Stoyanova Dimitrova", null)
 
 val conf = Configuration(hasNumbers = true, hasTitle = true)
 val resourcesRoot = conf["resources.root"]
+val CL_203 = Room("CL-2.03")
 
 fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(2020), "ALG") {
     // https://www.cphbusiness.dk/media/78341/pba_soft_cba_studieordning_2017.pdf
