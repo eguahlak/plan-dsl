@@ -71,3 +71,16 @@ fun Lecture.material(
       toFront = false,
       active = true
       ).also(build)
+
+fun Lecture.externalLink(
+    address: Address,
+    title: String? = null,
+    label: String? = null,
+    build: Material.() -> Unit = {}
+    ) =
+  Material(this,
+    Resource(address, label, title),
+    Material.Category.EXTERNAL,
+    toFront = false,
+    active = true
+    ).also(build)

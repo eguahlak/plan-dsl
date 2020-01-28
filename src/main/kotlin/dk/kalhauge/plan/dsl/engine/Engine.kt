@@ -99,8 +99,8 @@ val Course.context: Context get() =
                       REPOSITORY -> text(":octocat: ") { reference(material.resource) }
                       PRESENTATION -> text(":bar__chart: ") { reference(material.resource) }
                       EXERCISE -> text(":pencil: ") { reference(material.resource) }
-                      LOCAL -> { }
-                      EXTERNAL -> { }
+                      LOCAL -> { text(":page__facing__up:") { reference(material.resource) } }
+                      EXTERNAL -> { text(":globe__with__meridians:") {  reference(material.resource) } }
                       }
                     }
                   }
