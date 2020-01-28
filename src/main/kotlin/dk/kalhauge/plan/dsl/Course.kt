@@ -1,38 +1,8 @@
 package dk.kalhauge.plan.dsl
 
 import dk.kalhauge.document.dsl.*
-import dk.kalhauge.util.anchorize
 
-/*
-class ParagraphProperty {
-  var paragraph: Paragraph? = null
-  operator fun invoke(build: Paragraph.() -> Unit) {
-    paragraph = Paragraph().also(build)
-    }
-  operator fun plusAssign(content: String) {
-    plusAssign(text(content))
-    }
-  operator fun plusAssign(text: Text) {
-    if (paragraph == null) paragraph = Paragraph()
-    paragraph?.add(text)
-    }
-  }
-
-class SectionProperty(val title: String) {
-  val section = Section(title, title.anchorize())
-  operator fun invoke(build: Section.() -> Unit) {
-    section.build()
-    }
-  operator fun plusAssign(content: String) {
-    plusAssign(text(content))
-    }
-  operator fun plusAssign(text: Text) {
-    section.add(Paragraph().apply { add(text) })
-    }
-  }
-*/
-
-class Course(val title: String, val semester: Semester, val root: String) {
+class Course(val title: String, val semester: Semester, val label: String, val folder: Folder? = null) {
   val teachers = mutableSetOf<Teacher>()
   var location: Location = Somewhere
   val schedule = mutableListOf<TimeSlot>()
@@ -79,8 +49,15 @@ class Course(val title: String, val semester: Semester, val root: String) {
 fun course(
     title: String,
     semester: Semester,
-    root: String = "",
+    label: String = "",
     build: Course.() -> Unit = {}
     ) =
-  Course(title, semester, root).also(build)
+  Course(title, semester, label).also(build)
 
+fun Folder.course(
+    title: String,
+    semester: Semester,
+    label: String = "",
+    build: Course.() -> Unit = {}
+    ) =
+  Course(title, semester, label, this).also(build)

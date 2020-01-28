@@ -33,7 +33,7 @@ fun activityHeader(type: ActivityType) = when (type) {
   }
 
 val Course.context: Context get() =
-  folder(root) {
+  folder(label, folder) {
     weeks.forEach { week ->
       document("week-${week.code}/info", week.title) {
         paragraph { text {
@@ -302,7 +302,7 @@ val Course.context: Context get() =
           }
         }
       }
-    }
+    }.run { Context.root }
 
 fun Block.Parent.courseResourceSection(materials: List<Material>, title: String, category: Material.Category) {
   section(title) {
