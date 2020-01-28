@@ -5,6 +5,7 @@ import dk.kalhauge.plan.dsl.*
 import dk.kalhauge.plan.dsl.Material.Category.*
 import dk.kalhauge.plan.dsl.Taxonomy.*
 import dk.kalhauge.plan.dsl.ActivityType.*
+import javax.swing.text.StyledEditorKit
 
 fun lectureLink(lecture: Lecture) =
   if (lecture.week.active) text {
@@ -109,7 +110,7 @@ val Course.context: Context get() =
           }
         }
       }
-    document("course-info", "$title - $semester") {
+    document("course-info", "$title") {
       toc(1)
       curriculum?.let {
         paragraph {
@@ -358,3 +359,18 @@ fun List<String>.joinEnglish() =
   if (this.size == 1) this[0]
   else if (this.size == 2) "${this[0]} and ${this[1]}"
   else "${this.take(this.size - 1).joinToString(", ")}, and ${this.last()}"
+
+fun Document.courseList(trunk: Context?) {
+  if (trunk == null) return
+  list {
+    trunk.branches.filterIsInstance<Folder>().forEach { folder ->
+      val courseDocument =
+          folder.branches
+            .filterIsInstance<Document>()
+            .filter { it.name == "course-info" }
+            .firstOrNull()
+      if (courseDocument != null)
+        paragraph { reference(courseDocument) }
+      }
+    }
+  }
