@@ -35,6 +35,9 @@ fun activityHeader(type: ActivityType) = when (type) {
 
 val Course.context: Context get() =
   folder(label, folder) {
+    targets.values.forEach {
+      Context.targets[it.label] = it
+      }
     weeks.forEach { week ->
       document("week-${week.code}/info", week.title) {
         paragraph { text {

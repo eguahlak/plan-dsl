@@ -3,17 +3,25 @@ package dk.kalhauge.plan.dsl
 import dk.kalhauge.document.dsl.*
 import dk.kalhauge.document.dsl.Target
 
+interface Targeting {
+  val hasResource: Boolean
+  val target: Target?
+  }
+
 class Material(
     val lecture: Lecture,
-    val target: Target,
+    override val target: Target,
     val category: Category,
     var toFront: Boolean,
     var active: Boolean
-    ) {
+    ) : Targeting {
   enum class Category { PRESENTATION, EXERCISE, REPOSITORY, LOCAL, EXTERNAL }
+
   init {
     lecture.add(this)
-    }
+  }
+
+  override val hasResource = target is Resource
   }
 
 fun Lecture.presentation(

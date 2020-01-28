@@ -1,6 +1,7 @@
 package dk.kalhauge.plan.dsl
 
 import dk.kalhauge.document.dsl.*
+import dk.kalhauge.document.dsl.Target
 import dk.kalhauge.plan.dsl.engine.context
 
 class GhostSection : Block.Parent {
@@ -30,6 +31,17 @@ class Course(val title: String, val semester: Semester, val label: String, val f
 
   val materials = mutableListOf<Material>()
 
+  val targets = mutableMapOf<String, Target>()
+  fun register(item: Any?) {
+    if (item != null && item is Targeting) {
+      if (item.hasResource) {
+        item.target?.let {
+          targets[it.label] = it
+          }
+        }
+      }
+    }
+
   var objective = Paragraph().also { it { text("At the end of the course the student will") } }
   val objectives = mutableMapOf<String, Objective>()
 
@@ -56,8 +68,14 @@ class Course(val title: String, val semester: Semester, val label: String, val f
     objective.key?.let { objectives[it] = objective }
     }
   fun getObjective(key: String) =  objectives[key] ?: OrphanedObjective(key)
-  fun add(creditable: Creditable) { creditables += creditable }
-  fun add(material: Material) { materials += material }
+  fun add(creditable: Creditable) {
+    register(creditable)
+    creditables += creditable
+    }
+  fun add(material: Material) {
+    register(material)
+    materials += material
+    }
   fun add(teacher: Teacher) { teachers += teacher }
 
   }

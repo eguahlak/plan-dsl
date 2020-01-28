@@ -26,9 +26,9 @@ class Assignment(
     title: String,
     load: Double,
     override val credits: Double,
-    var target: Target?
-    ) : Activity(lecture, title, ActivityType.WORK, load), Creditable {
-
+    override var target: Target?
+    ) : Activity(lecture, title, ActivityType.WORK, load), Creditable, Targeting {
+  override val hasResource get() = target?.let { it is Resource } ?: false
   }
 
 fun Lecture.assignment(

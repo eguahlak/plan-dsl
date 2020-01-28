@@ -23,15 +23,21 @@ class Lecture(val week: Week, val title: String) {
 
   val materials = mutableListOf<Material>()
 
+
+
   init {
     timeSlot = course.schedule.getOrElse(week.lectures.size, { TBD })
     week.add(this)
     }
 
   fun add(objective: Objective) { objectives += objective }
-  fun add(activity: Activity) { activities += activity }
+  fun add(activity: Activity) {
+    course.register(activity)
+    activities += activity
+    }
   fun add(material: Material) {
     materials += material
+    course.register(material)
     if (material.toFront) course.add(material)
     }
   fun add(teacher: Teacher) {
