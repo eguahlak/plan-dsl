@@ -135,12 +135,12 @@ val Course.context: Context get() =
             add(flow.overview)
             if (flow.skills != null) paragraph { +"*Business skills*: ${flow.skills}" }
             table {
-              center("Week{:.week}")
-              center("Day{:.day}")
-              center("Time{:.time}")
-              left("Subject{:.subject}")
-              right("Load{:.load}")
-              left("Notes{:.notes}")
+              center("Week")
+              center("Day")
+              center("Time")
+              left("Subject")
+              right("Load")
+              left("Notes")
               flow.lectures.forEach { lecture ->
                 row {
                   paragraph { reference("../week-${lecture.week.code}/info/top", lecture.week.code) }
