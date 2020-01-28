@@ -11,8 +11,8 @@ val TDI = Teacher("TDI", "Todorka Stoyanova Dimitrova", null)
 
 val conf = Configuration(hasNumbers = true, hasTitle = true)
 val resourcesRoot = conf["resources.root"]
-fun main() {
-  val course = course("Algorithms and Datastructures", spring(2020), "ALG") {
+
+fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(2020), "ALG") {
     // https://www.cphbusiness.dk/media/78341/pba_soft_cba_studieordning_2017.pdf
     location = CL_203
     wednesday(morning)
@@ -35,7 +35,7 @@ fun main() {
           is_able_to("choose an algorithm based on complexity") {
             fulfills("A1")
             fulfills("A2")
-            }
+          }
           objective("K2")
 
           activity { +"The following activities..." }
@@ -50,28 +50,28 @@ fun main() {
           friday("08:30" to "15:00")
           skill("the time complexity of an algorithm") {
             fulfills("S2")
-            }
+          }
           note = "for /test/"
           assignment("Mini project 1", 20.0, 15.0) {
             target = cached("/Users/AKA/tmp/resources/assignment-1.pdf")
-            }
+          }
           presentation("/Users/AKA/DatSoftLyngby/soft2019fall/docs/DM/week-38/04-regular-languages.pdf", "Regular Languages")
           exercise("$resourcesRoot/sas5.pdf", "Exercise 2", "exercise2")
-          }
-        lecture("Graphs")
         }
+        lecture("Graphs")
+      }
       week(7) {
         lecture("Insertion sort") {
           teachers(AKA)
           knowledge("simple sorting algorithms") {
             fulfills("A2")
-            }
           }
         }
+      }
       week(8) {
         lecture("Merge sort") { }
-        }
       }
+    }
 
     flow("Searching") {}
 
@@ -81,16 +81,16 @@ fun main() {
     curriculum(10) {
       content {
         +"""
-         Formålet med fagelementet er at kvalificere den studerende til
-         planlægning og gennemførelse af test.
-         Den studerende skal have forståelse for placering og betydning af test
-         i metodikker for systemudvikling. 
-         Den studerende skal kunne designe og gennemføre systematisk test af større systemer,
-         herunder etablering af automatiseret test.
-         Endvidere skal den studerende beherske begreber og teknikker
-         til design og konstruktion af testbare systemer.
-         """.trimIndent()
-        }
+       Formålet med fagelementet er at kvalificere den studerende til
+       planlægning og gennemførelse af test.
+       Den studerende skal have forståelse for placering og betydning af test
+       i metodikker for systemudvikling. 
+       Den studerende skal kunne designe og gennemføre systematisk test af større systemer,
+       herunder etablering af automatiseret test.
+       Endvidere skal den studerende beherske begreber og teknikker
+       til design og konstruktion af testbare systemer.
+       """.trimIndent()
+      }
       knowledge("væsentlige teststrategier og -modeller samt deres rolle i systemudviklingen")
       knowledge("test som en integreret del af et udviklingsprojekt")
       knowledge("forskellige testtyper og deres anvendelse")
@@ -105,18 +105,21 @@ fun main() {
       skill("definere, planlægge og gennemføre test i et udviklingsprojekt, der passer til projektets kvalitetskrav")
       skill("planlægge og styre gennemførelse af såvel intern som ekstern test af softwaresystemer")
       skill("designe testbare systemer")
-      }
+    }
 
     exam {
       +"""
-       30 minutes oral exam, no preparation but questions known in advance.
-       A student shall have a minimum of 80 credits to attend the exam.
-       """.trimIndent()
-      }
-    exam += "Hello World!, Killroy was here"
+     30 minutes oral exam, no preparation but questions known in advance.
+     A student shall have a minimum of 80 credits to attend the exam.
+     """.trimIndent()
     }
+    exam += "Hello World!, Killroy was here"
+  }
 
-  // val host = FileHost("/Users/AKA/tmp/plan-dsl-test")
-  val host = FileHost(conf)
-  GfmHandler(host, course.context).handle(printRelations = true, printTargets = true)
+
+fun main() {
+  val docs = folder("docs") {
+    tstCourse()
+    }
+  GfmHandler(FileHost(conf), docs).handle(printRelations = true, printTargets = true)
   }

@@ -1,6 +1,7 @@
 package dk.kalhauge.plan.dsl
 
 import dk.kalhauge.document.dsl.*
+import dk.kalhauge.plan.dsl.engine.context
 
 class Course(val title: String, val semester: Semester, val label: String, val folder: Folder? = null) {
   val teachers = mutableSetOf<Teacher>()
@@ -60,4 +61,7 @@ fun Folder.course(
     label: String = "",
     build: Course.() -> Unit = {}
     ) =
-  Course(title, semester, label, this).also(build)
+  Course(title, semester, label, this).also {
+    it.build()
+    it.context
+    }
