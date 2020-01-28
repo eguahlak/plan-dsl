@@ -9,11 +9,11 @@ import dk.kalhauge.plan.dsl.engine.context
 val AKA = Teacher("AKA", "Anders Kalhauge", "21724411")
 val TDI = Teacher("TDI", "Todorka Stoyanova Dimitrova", null)
 
-val conf = Configuration(hasNumbers = true, hasTitle = true)
-val resourcesRoot = conf["resources.root"]
-val CL_203 = Room("CL-2.03")
+private val conf = Configuration(hasNumbers = true, hasTitle = true)
+private val resourcesRoot = conf["resources.root"]
+private val CL_203 = Room("CL-2.03")
 
-fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(2020), "ALG") {
+private fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(2020), "ALG") {
     // https://www.cphbusiness.dk/media/78341/pba_soft_cba_studieordning_2017.pdf
     location = CL_203
     wednesday(morning)
