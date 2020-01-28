@@ -51,7 +51,7 @@ fun Lecture.repository(
     build: Material.() -> Unit = {}
     ) =
     Material(this,
-      Resource(address, label, title),
+      Resource(address, title, label),
       Material.Category.REPOSITORY,
       toFront = true,
       active = true
@@ -75,7 +75,7 @@ fun Lecture.material(
     build: Material.() -> Unit = {}
     ) =
     Material(this,
-      Resource(address, label, title),
+      Resource(address, title, label),
       Material.Category.LOCAL,
       toFront = false,
       active = true
@@ -88,7 +88,7 @@ fun Lecture.externalLink(
     build: Material.() -> Unit = {}
     ) =
   Material(this,
-    Resource(address, label, title),
+    Resource(address, title, label),
     Material.Category.EXTERNAL,
     toFront = false,
     active = true
