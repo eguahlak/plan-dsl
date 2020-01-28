@@ -86,7 +86,7 @@ val Course.context: Context get() =
                 paragraph("In class activities - (${lecture.timeSlot.load})")
                 list {
                   lecture.materials.filter { it.category == Material.Category.EXERCISE }.forEach {
-                    paragraph { reference(it.resource) }
+                    paragraph { reference(it.target) }
                     }
                   }
                 }
@@ -96,11 +96,11 @@ val Course.context: Context get() =
                 lecture.materials.forEach { material ->
                   paragraph {
                     when (material.category) {
-                      REPOSITORY -> text(":octocat: ") { reference(material.resource) }
-                      PRESENTATION -> text(":bar__chart: ") { reference(material.resource) }
-                      EXERCISE -> text(":pencil: ") { reference(material.resource) }
-                      LOCAL -> { text(":page__facing__up:") { reference(material.resource) } }
-                      EXTERNAL -> { text(":globe__with__meridians:") {  reference(material.resource) } }
+                      REPOSITORY -> text(":octocat: ") { reference(material.target) }
+                      PRESENTATION -> text(":bar__chart: ") { reference(material.target) }
+                      EXERCISE -> text(":pencil: ") { reference(material.target) }
+                      LOCAL -> { text(":page__facing__up:") { reference(material.target) } }
+                      EXTERNAL -> { text(":globe__with__meridians:") {  reference(material.target) } }
                       }
                     }
                   }
@@ -320,7 +320,7 @@ fun Block.Parent.courseResourceSection(
   section(title) {
     list {
       specifics.forEach {
-        paragraph { reference(it.resource) }
+        paragraph { reference(it.target) }
         }
       }
     }

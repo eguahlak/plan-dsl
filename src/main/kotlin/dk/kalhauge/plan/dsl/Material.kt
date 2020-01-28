@@ -1,13 +1,11 @@
 package dk.kalhauge.plan.dsl
 
-import dk.kalhauge.document.dsl.Address
-import dk.kalhauge.document.dsl.Resource
-import dk.kalhauge.document.dsl.cached
-import dk.kalhauge.document.dsl.document
+import dk.kalhauge.document.dsl.*
+import dk.kalhauge.document.dsl.Target
 
 class Material(
     val lecture: Lecture,
-    val resource: Resource,
+    val target: Target,
     val category: Category,
     var toFront: Boolean,
     var active: Boolean
@@ -59,6 +57,17 @@ fun Lecture.repository(
       active = true
       ).also(build)
 
+fun Lecture.repository(
+    label: String,
+    build: Material.() -> Unit = {}
+    ) =
+    Material(this,
+      TargetProxy(label),
+      Material.Category.REPOSITORY,
+      toFront = true,
+      active = true
+      ).also(build)
+
 fun Lecture.material(
     address: Address,
     title: String? = null,
@@ -80,6 +89,17 @@ fun Lecture.externalLink(
     ) =
   Material(this,
     Resource(address, label, title),
+    Material.Category.EXTERNAL,
+    toFront = false,
+    active = true
+    ).also(build)
+
+fun Lecture.externalLink(
+    label: String,
+    build: Material.() -> Unit = {}
+    ) =
+  Material(this,
+    TargetProxy(label),
     Material.Category.EXTERNAL,
     toFront = false,
     active = true
