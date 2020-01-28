@@ -13,7 +13,7 @@ class Lecture(val week: Week, val title: String) {
   val code get() = if (number < 10) "0$number" else "$number"
   var note = " "
   val workLoad: Double get() = activities.map { it.load }.sum() + timeSlot.load
-  var overview = Paragraph()
+  var overview = GhostSection()
 
   var objective = Paragraph()
   val objectives = mutableListOf<Objective>()

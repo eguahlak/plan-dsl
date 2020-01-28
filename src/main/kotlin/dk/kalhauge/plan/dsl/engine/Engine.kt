@@ -131,8 +131,8 @@ val Course.context: Context get() =
           }
         }
       */
-      section("Plan") {
-        add(plan)
+      plan {
+//        add(plan)
         flows.forEach { flow ->
           section(flow.title) {
             add(flow.overview)
@@ -161,6 +161,7 @@ val Course.context: Context get() =
             }
           }
         }
+      add(plan)
       section("Resources") {
         var count =
             courseResourceSection(materials, "Presentations", PRESENTATION)

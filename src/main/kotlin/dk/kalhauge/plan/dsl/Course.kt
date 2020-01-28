@@ -25,7 +25,7 @@ class Course(val title: String, val semester: Semester, val label: String, val f
 
   val overview = GhostSection()
 
-  var plan = Paragraph()
+  var plan = GhostSection()
   val flows = mutableListOf<Flow>()
 
   val materials = mutableListOf<Material>()
