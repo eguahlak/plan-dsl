@@ -162,10 +162,12 @@ val Course.context: Context get() =
           }
         }
       section("Resources") {
-        courseResourceSection(materials, "Presentations", PRESENTATION)
-        courseResourceSection(materials, "Exercises", EXERCISE)
-        courseResourceSection(materials, "Repositories", REPOSITORY)
-        courseResourceSection(materials, "External Links", EXTERNAL)
+        var count =
+            courseResourceSection(materials, "Presentations", PRESENTATION)
+        count += courseResourceSection(materials, "Exercises", EXERCISE)
+        count += courseResourceSection(materials, "Repositories", REPOSITORY)
+        count += courseResourceSection(materials, "External Links", EXTERNAL)
+        if (count == 0) paragraph("Selected resources from lectures will show here.")
         }
       section("Assignments and Credits") {
         add(creditable)
@@ -307,14 +309,21 @@ val Course.context: Context get() =
       }
     }.run { Context.root }
 
-fun Block.Parent.courseResourceSection(materials: List<Material>, title: String, category: Material.Category) {
+fun Block.Parent.courseResourceSection(
+    materials: List<Material>,
+    title: String,
+    category: Material.Category
+    ): Int {
+  var specifics = materials.filter { it.category == category }
+  if (specifics.isEmpty()) return 0
   section(title) {
     list {
-      materials.filter { it.category == category }.forEach {
+      specifics.forEach {
         paragraph { reference(it.resource) }
         }
       }
     }
+  return specifics.size
   }
 
 fun Block.Parent.curriculumObjectiveSection(
