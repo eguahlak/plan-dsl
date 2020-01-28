@@ -9,8 +9,8 @@ class Material(
     val lecture: Lecture,
     val resource: Resource,
     val category: Category,
-    val toFront: Boolean,
-    val active: Boolean
+    var toFront: Boolean,
+    var active: Boolean
     ) {
   enum class Category { PRESENTATION, EXERCISE, REPOSITORY, LOCAL, EXTERNAL }
   init {
