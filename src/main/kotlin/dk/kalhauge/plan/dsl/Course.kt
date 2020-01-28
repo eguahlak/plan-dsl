@@ -3,12 +3,27 @@ package dk.kalhauge.plan.dsl
 import dk.kalhauge.document.dsl.*
 import dk.kalhauge.plan.dsl.engine.context
 
+class GhostSection : Block.Parent {
+  override val children = mutableListOf<Block.Child>()
+  override fun add(child: Block.Child?) {
+    if (child != null) children += child
+    }
+  operator fun invoke(build: GhostSection.() -> Unit) { build() }
+  // TODO align with Paragraph.plusAssign
+  operator fun plusAssign(text: Text) { paragraph { add(text) } }
+  operator fun plusAssign(content: String) { plusAssign(text(content)) }
+  }
+
+fun Block.Parent.add(ghostSection: GhostSection) {
+  ghostSection.children.forEach { add(it) }
+  }
+
 class Course(val title: String, val semester: Semester, val label: String, val folder: Folder? = null) {
   val teachers = mutableSetOf<Teacher>()
   var location: Location = Somewhere
   val schedule = mutableListOf<TimeSlot>()
 
-  val overview = Paragraph()
+  val overview = GhostSection()
 
   var plan = Paragraph()
   val flows = mutableListOf<Flow>()

@@ -18,6 +18,9 @@ class Attendance(
 fun Course.attendance(credits: Double = 20.0, title: String? = null) =
   Attendance(credits, text(title ?: "Attendance")).also { add(it) }
 
+//fun Lecture.attendance(credits: Double = 20.0, title: String? = null) =
+//  Attendance(credits, text(title ?: "Attendance")).also { add(it) }
+
 class Assignment(
     lecture: Lecture,
     title: String,
