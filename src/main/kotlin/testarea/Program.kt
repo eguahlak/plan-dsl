@@ -5,6 +5,7 @@ import dk.kalhauge.document.handler.FileHost
 import dk.kalhauge.document.handler.GfmHandler
 import dk.kalhauge.plan.dsl.*
 import dk.kalhauge.plan.dsl.engine.context
+import dk.kalhauge.plan.dsl.engine.docs
 
 val AKA = Teacher("AKA", "Anders Kalhauge", "21724411")
 val TDI = Teacher("TDI", "Todorka Stoyanova Dimitrova", null)
@@ -121,7 +122,7 @@ private fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(
 
 
 fun main() {
-  val docs = folder("docs") {
+  val docs = docs("Test", "Cphbusiness SOFT 2020 Spring") {
     tstCourse()
     }
   GfmHandler(FileHost(conf), docs).handle(printRelations = true, printTargets = true)
