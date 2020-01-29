@@ -64,6 +64,8 @@ class TimeSlot(
     WeekDay.SUNDAY ->    "*SUN*"
     WeekDay.TBD ->       "/TBD/"
     }
+
+  override fun toString() = "*Time*: $dayText $timeText *Location*: $location"
   }
 
 val TBD = TimeSlot(WeekDay.TBD, "00:00" to "00:00", Somewhere, 3.5)
