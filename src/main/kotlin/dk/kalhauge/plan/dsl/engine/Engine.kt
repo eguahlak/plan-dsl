@@ -94,6 +94,7 @@ val Course.context: Context get() =
                   }
                 }
               }
+            add(lecture.content)
             section("Materials") {
               list {
                 lecture.materials.forEach { material ->

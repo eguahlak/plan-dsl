@@ -21,6 +21,8 @@ class Lecture(val week: Week, val title: String) {
   var activity = Paragraph()
   val activities = mutableListOf<Activity>()
 
+  val content = GhostSection()
+
   val materials = mutableListOf<Material>()
 
 
