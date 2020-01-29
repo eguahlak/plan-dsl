@@ -114,7 +114,7 @@ val Course.context: Context get() =
         }
       }
     document("course-info", "$title") {
-      toc(1)
+      toc(2)
       curriculum?.let {
         paragraph {
           reference("../curriculum/top", "Find the curriculum here (Danish)")
