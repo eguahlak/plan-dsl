@@ -58,6 +58,7 @@ private fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(
           }
           presentation("/Users/AKA/DatSoftLyngby/soft2019fall/docs/DM/week-38/04-regular-languages.pdf", "Regular Languages")
           exercise("$resourcesRoot/sas5.pdf", "Exercise 2", "exercise2")
+          repository(Address("https://github.com/eguahlak/document-dsl.git"), "Eguahlak på GitHub", "DOC-DSL")
         }
         lecture("Graphs")
       }
@@ -66,6 +67,7 @@ private fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(
           teachers(AKA)
           knowledge("simple sorting algorithms") {
             fulfills("A2")
+          repository("DOC-DSL")
           }
         }
       }

@@ -21,7 +21,7 @@ class Material(
     lecture.add(this)
   }
 
-  override val hasResource = target is Resource
+  override val hasResource get() = target is Resource
   }
 
 fun Lecture.presentation(
