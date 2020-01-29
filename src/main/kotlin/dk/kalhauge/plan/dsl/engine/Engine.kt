@@ -54,7 +54,8 @@ val Course.context: Context get() =
         add(week.overview)
         week.lectures.forEach { lecture ->
           section(lecture.title, "L${lecture.code}") {
-            paragraph(lecture.timeSlot.toString())
+            paragraph("*Time:* ${lecture.timeSlot.dayText} ${lecture.timeSlot.timeText}")
+            paragraph("*Location:* ${lecture.timeSlot.location}")
             when (lecture.teachers.size) {
               0 -> {}
               1 -> paragraph("*Teacher:* ${lecture.teachers[0].name}")
