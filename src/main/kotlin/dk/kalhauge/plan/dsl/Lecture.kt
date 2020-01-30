@@ -40,7 +40,7 @@ class Lecture(val week: Week, val title: String) {
   fun add(material: Material) {
     materials += material
     course.register(material)
-    if (material.toFront && material.hasResource) course.add(material)
+    if (material.toFront /* && material.hasResource */) course.add(material)
     }
   fun add(teacher: Teacher) {
     teachers += teacher
