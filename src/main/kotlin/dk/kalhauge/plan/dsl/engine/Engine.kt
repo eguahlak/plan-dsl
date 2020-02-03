@@ -376,7 +376,7 @@ fun List<String>.joinEnglish() =
   else if (this.size == 2) "${this[0]} and ${this[1]}"
   else "${this.take(this.size - 1).joinToString(", ")}, and ${this.last()}"
 
-fun Document.courseList(trunk: Tree.Trunk? = null, documentName: String = "README") {
+fun Document.courseList(trunk: Tree.BaseTrunk? = null, documentName: String = "README") {
   val folder = trunk ?: this.trunk
   list {
     folder.branches.filterIsInstance<Folder>().forEach { folder ->
