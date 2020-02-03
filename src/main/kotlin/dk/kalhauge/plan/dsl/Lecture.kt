@@ -1,6 +1,6 @@
 package dk.kalhauge.plan.dsl
 
-import dk.kalhauge.document.dsl.Paragraph
+import dk.kalhauge.document.dsl.paragraph
 
 class Lecture(val week: Week, val title: String) {
   val teachers = mutableListOf<Teacher>()
@@ -13,15 +13,15 @@ class Lecture(val week: Week, val title: String) {
   val code get() = if (number < 10) "0$number" else "$number"
   var note = " "
   val workLoad: Double get() = activities.map { it.load }.sum() + timeSlot.load
-  var overview = GhostSection()
+  var overview = ghostSection()
 
-  var objective = Paragraph()
+  var objective = paragraph()
   val objectives = mutableListOf<Objective>()
 
-  var activity = Paragraph()
+  var activity = paragraph()
   val activities = mutableListOf<Activity>()
 
-  val content = GhostSection()
+  val content = ghostSection()
 
   val materials = mutableListOf<Material>()
 

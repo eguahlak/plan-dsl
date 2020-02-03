@@ -1,22 +1,23 @@
 package dk.kalhauge.plan.dsl.engine
 
 import dk.kalhauge.document.dsl.*
+import dk.kalhauge.document.dsl.structure.Block
+import dk.kalhauge.document.dsl.structure.Tree
 import dk.kalhauge.plan.dsl.*
+import dk.kalhauge.plan.dsl.ActivityType.*
 import dk.kalhauge.plan.dsl.Material.Category.*
 import dk.kalhauge.plan.dsl.Taxonomy.*
-import dk.kalhauge.plan.dsl.ActivityType.*
-import javax.swing.text.StyledEditorKit
 
 fun lectureLink(lecture: Lecture) =
   if (lecture.week.active) text {
     text("${lecture.code} ")
-    reference("../week-${lecture.week.code}/info/sec:L${lecture.code}", title = lecture.title)
+    reference("../week-${lecture.week.code}/${lecture.week.documentName}/L${lecture.code}", title = lecture.title)
     }
   else text("${lecture.code} ${lecture.title}")
 
 fun shortLectureLink(lecture: Lecture) =
   if (lecture.week.active) text {
-    reference("../week-${lecture.week.code}/info/sec:L${lecture.code}", title = lecture.code)
+    reference("../week-${lecture.week.code}/${lecture.week.documentName}/L${lecture.code}", title = lecture.code)
     }
   else text("${lecture.code}")
 
@@ -33,21 +34,18 @@ fun activityHeader(type: ActivityType) = when (type) {
   WORK -> "*Do*"
   }
 
-val Course.context: Context get() =
-  folder(label, folder) {
-    targets.values.forEach {
-      Context.targets[it.label] = it
-      }
-    weeks.forEach { week ->
-      document("week-${week.code}/info", week.title) {
+fun Tree.Trunk.add(course: Course) {
+  folder(course.label) {
+    course.weeks.forEach { week ->
+      document("week-${week.code}/${week.documentName}", week.title) {
         paragraph { text {
           week.previous?.let { prev ->
             text(":point__left: ")
-            reference("../../week-${prev.code}/info/top")
+            reference("../../week-${prev.code}/${week.documentName}")
             }
-          reference("../../course-info/top", title = " :point__up: ")
+          reference("../../${course.documentName}", title = " :point__up: ")
           week.next?.let { next ->
-            reference("../../week-${next.code}/info/top")
+            reference("../../week-${next.code}/${week.documentName}")
             text(" :point__right:")
             }
           } }
@@ -116,33 +114,19 @@ val Course.context: Context get() =
           }
         }
       }
-    document("course-info", "$title") {
+    document(course.documentName, "${course.title}") {
       toc(2)
-      curriculum?.let {
+      course.curriculum?.let {
         paragraph {
-          reference("../curriculum/top", "Find the curriculum here (Danish)")
+          reference("../curriculum", "Find the curriculum here")
           }
         }
-      add(overview)
-      /*
-      section("Objectives") {
-        add(objective)
-        list {
-          objectives.values.sortedBy { it.level }.forEach { objective ->
-            if (objective.fromCurriculum)
-                paragraph("*${taxonomiHeader(objective.level)} ${objective.title}*")
-            else
-                paragraph("${taxonomiHeader(objective.level)} ${objective.title}")
-            }
-          }
-        }
-      */
-      plan {
-//        add(plan)
-        flows.forEach { flow ->
+      add(course.overview)
+      course.plan {
+        course.flows.forEach { flow ->
           section(flow.title) {
             add(flow.overview)
-            if (flow.skills != null) paragraph { +"*Business skills*: ${flow.skills}" }
+            if (flow.skills != null) paragraph("*Business skills*: ${flow.skills}")
             table {
               center("Week")
               center("Day")
@@ -152,7 +136,7 @@ val Course.context: Context get() =
               left("Notes")
               flow.lectures.forEach { lecture ->
                 row {
-                  paragraph { reference("../week-${lecture.week.code}/info/top", lecture.week.code) }
+                  paragraph { reference("../week-${lecture.week.code}/${lecture.week.documentName}", lecture.week.code) }
                   paragraph(lecture.timeSlot.dayText)
                   paragraph(lecture.timeSlot.timeText)
                   paragraph { add(lectureLink(lecture)) }
@@ -167,21 +151,36 @@ val Course.context: Context get() =
             }
           }
         }
-      add(plan)
+      add(course.plan)
       section("Resources") {
         var count =
-            courseResourceSection(materials, "Presentations", PRESENTATION)
-        count += courseResourceSection(materials, "Exercises", EXERCISE)
-        count += courseResourceSection(materials, "Repositories", REPOSITORY)
-        count += courseResourceSection(materials, "External Links", EXTERNAL)
+                 courseResourceSection(course.materials, "Presentations", PRESENTATION)
+        count += courseResourceSection(course.materials, "Exercises", EXERCISE)
+        count += courseResourceSection(course.materials, "Repositories", REPOSITORY)
+        count += courseResourceSection(course.materials, "External Links", EXTERNAL)
         if (count == 0) paragraph("Selected resources from lectures will show here.")
+        section("Literature") {
+          list {
+            course.books.forEach { book ->
+              list {
+                capture(book.title, label = book.label) {
+                  if (book.subtitle != null) text("/${book.subtitle}/")
+                  if (book.edition != null) text("${book.edition} edition")
+                  text("*${book.authors}* - /${book.editor}/")
+                  if (book.isbn != null) text("`${book.isbn}`")
+                  if (book.url != null) { website(book.url) }
+                  }
+                }
+              }
+            }
+          }
         }
       section("Assignments and Credits") {
-        add(creditable)
+        add(course.creditable)
         table {
           left("Title")
           right("Credits")
-          creditables.forEach { creditable ->
+          course.creditables.forEach { creditable ->
             row {
               when (creditable) {
                 is Assignment -> {
@@ -201,22 +200,22 @@ val Course.context: Context get() =
             }
           }
         }
-      add(exam)
+      add(course.exam)
       }
-    curriculum?.let { curriculum ->
-      document("curriculum", "$title") {
+    course.curriculum?.let { curriculum ->
+      document("curriculum", "${course.title}") {
         section("Indhold") { add(curriculum.content) }
         curriculumObjectiveSection(curriculum, KNOWLEDGE, "Viden /knowledge/", "Den studerende har viden om:")
         curriculumObjectiveSection(curriculum, ABILITY, "Færdigheder /abilities/", "Den studerende kan:")
         curriculumObjectiveSection(curriculum, SKILL, "Kompetencer /skills/", "Den studerende kan:")
         }
       }
-    document("summary", "$title - Summary") {
+    document("summary", "${course.title} - Summary") {
       section("Credits") {
         table {
           left("Title")
           right("Credits")
-          creditables.forEach { creditable ->
+          course.creditables.forEach { creditable ->
             row {
               when (creditable) {
                 is Assignment -> {
@@ -236,11 +235,11 @@ val Course.context: Context get() =
             }
           row {
             paragraph("*Total*")
-            paragraph("*${creditables.map {it.credits }.sum()}*")
+            paragraph("*${course.creditables.map {it.credits }.sum()}*")
             }
           }
         }
-      curriculum?.let { curriculum ->
+      course.curriculum?.let { curriculum ->
         section("Course Objectives /the Matrix/") {
           table {
             left("Code")
@@ -251,7 +250,7 @@ val Course.context: Context get() =
                 paragraph(objective.key)
                 paragraph(objective.title)
                 paragraph {
-                  lectures
+                  course.lectures
                     .filter { lecture ->
                       lecture.objectives.any { it.fulfillments.contains(objective.key) }
                       }
@@ -265,9 +264,9 @@ val Course.context: Context get() =
           }
         }
       section("Lecture Objectives") {
-        lectureObjectiveSection(lectures, "Knowledge (/Viden/)", KNOWLEDGE)
-        lectureObjectiveSection(lectures, "Abilities (/Færdigheder/)", ABILITY)
-        lectureObjectiveSection(lectures, "Skills (/Kompetencer/)", SKILL)
+        lectureObjectiveSection(course.lectures, "Knowledge (/Viden/)", KNOWLEDGE)
+        lectureObjectiveSection(course.lectures, "Abilities (/Færdigheder/)", ABILITY)
+        lectureObjectiveSection(course.lectures, "Skills (/Kompetencer/)", SKILL)
         }
       section("Work Load") {
         table {
@@ -277,7 +276,7 @@ val Course.context: Context get() =
           right("Read")
           right("Write")
           right("Do")
-          lectures.forEach {
+          course.lectures.forEach {
             val (presence, read, write, work) = it.loads()
             row {
               paragraph { add(lectureLink(it)) }
@@ -290,7 +289,7 @@ val Course.context: Context get() =
             }
           val loadSum = Lecture.Load()
           val (presence, read, write, work) =
-              lectures.map { it.loads() }.fold(loadSum) { sum, load -> sum.added(load) }
+              course.lectures.map { it.loads() }.fold(loadSum) { sum, load -> sum.added(load) }
           row {
             paragraph("*Total*")
             paragraph("*/${(presence + read + write + work)}/*")
@@ -302,7 +301,7 @@ val Course.context: Context get() =
           }
         }
       section("Business Skills") {
-        flows.filter { it.skills != null }.forEach {
+        course.flows.filter { it.skills != null }.forEach {
           // TODO add Text as type to bold(...)
           paragraph {
             text {
@@ -314,9 +313,10 @@ val Course.context: Context get() =
           }
         }
       }
-    }.run { Context.root }
+    }
+  }
 
-fun Block.Parent.courseResourceSection(
+fun Block.BaseParent.courseResourceSection(
     materials: List<Material>,
     title: String,
     category: Material.Category
@@ -333,7 +333,7 @@ fun Block.Parent.courseResourceSection(
   return specifics.size
   }
 
-fun Block.Parent.curriculumObjectiveSection(
+fun Block.BaseParent.curriculumObjectiveSection(
   curriculum: Curriculum,
   taxonomy: Taxonomy,
   title: String,
@@ -349,7 +349,7 @@ fun Block.Parent.curriculumObjectiveSection(
     }
   }
 
-fun Block.Parent.lectureObjectiveSection(lectures: List<Lecture>, title: String, taxonomy: Taxonomy) {
+fun Block.BaseParent.lectureObjectiveSection(lectures: List<Lecture>, title: String, taxonomy: Taxonomy) {
   section(title) {
     table {
       left("Objective")
@@ -376,14 +376,14 @@ fun List<String>.joinEnglish() =
   else if (this.size == 2) "${this[0]} and ${this[1]}"
   else "${this.take(this.size - 1).joinToString(", ")}, and ${this.last()}"
 
-fun Document.courseList(trunk: Context?) {
-  if (trunk == null) return
+fun Document.courseList(trunk: Tree.Trunk? = null, documentName: String = "README") {
+  val folder = trunk ?: this.trunk
   list {
-    trunk.branches.filterIsInstance<Folder>().forEach { folder ->
+    folder.branches.filterIsInstance<Folder>().forEach { folder ->
       val courseDocument =
           folder.branches
             .filterIsInstance<Document>()
-            .filter { it.name == "course-info" }
+            .filter { it.name == documentName }
             .firstOrNull()
       if (courseDocument != null)
         paragraph { reference(courseDocument) }

@@ -2,57 +2,72 @@ package dk.kalhauge.plan.dsl
 
 import dk.kalhauge.document.dsl.*
 import dk.kalhauge.document.dsl.Target
-import dk.kalhauge.plan.dsl.engine.context
+import dk.kalhauge.document.dsl.structure.Block
+import dk.kalhauge.document.dsl.structure.Context
+import dk.kalhauge.document.dsl.structure.FreeContext
+import dk.kalhauge.document.dsl.structure.Tree
+import dk.kalhauge.plan.dsl.engine.add
 
-class GhostSection : Block.Parent {
+class GhostSection(context: Context?) : Block.BaseParent() {
+  val context = context ?: FreeContext
+
   override val children = mutableListOf<Block.Child>()
-  override fun add(child: Block.Child?) {
-    if (child != null) children += child
-    }
+
+  override val filePath get() = context.filePath
+  override val keyPath get() = context.keyPath
+  override fun register(target: Target) = context.register(target)
+  override fun find(key: String) = context.find(key)
+
   operator fun invoke(build: GhostSection.() -> Unit) { build() }
   // TODO align with Paragraph.plusAssign
   operator fun plusAssign(text: Text) { paragraph { add(text) } }
   operator fun plusAssign(content: String) { plusAssign(text(content)) }
   }
 
+fun Block.BaseParent.ghostSection() = GhostSection(this)
+
+fun ghostSection() = GhostSection(null)
+
 fun Block.Parent.add(ghostSection: GhostSection) {
   ghostSection.children.forEach { add(it) }
   }
 
-class Course(val title: String, val semester: Semester, val label: String, val folder: Folder? = null) {
+class Course(val title: String, val semester: Semester, val label: String) {
+  var documentName = "README"
   val teachers = mutableSetOf<Teacher>()
   var location: Location = Somewhere
   val schedule = mutableListOf<TimeSlot>()
 
-  val overview = GhostSection()
+  val overview = ghostSection()
 
-  var plan = Section("Plan")
+  var plan = section("Plan")
   val flows = mutableListOf<Flow>()
 
   val materials = mutableListOf<Material>()
+
+  val books = mutableListOf<Book>()
 
   val targets = mutableMapOf<String, Target>()
   fun register(item: Any?) {
     if (item != null && item is Targeting) {
       if (item.hasResource) {
         item.target?.let {
-          targets[it.label] = it
+          targets[it.key] = it
           }
         }
       }
     }
-
-  var objective = Paragraph().also { it { text("At the end of the course the student will") } }
+  var objective = paragraph().also { it { text("At the end of the course the student will") } }
   val objectives = mutableMapOf<String, Objective>()
 
-  var creditable = Paragraph()
+  var creditable = paragraph()
   val creditables = mutableListOf<Creditable>()
 
   var nextLectureNumber = 0
   val weeks = mutableListOf<Week>()
   val lectures get() = weeks.flatMap { it.lectures }
 
-  val exam = Section("Exam")
+  val exam = section("Exam")
 
   var curriculum: Curriculum? = null
 
@@ -76,6 +91,7 @@ class Course(val title: String, val semester: Semester, val label: String, val f
     register(material)
     materials += material
     }
+  fun add(book: Book) { books += book }
   fun add(teacher: Teacher) { teachers += teacher }
 
   }
@@ -88,13 +104,14 @@ fun course(
     ) =
   Course(title, semester, label).also(build)
 
-fun Folder.course(
+
+fun Tree.Trunk.course(
     title: String,
     semester: Semester,
     label: String = "",
     build: Course.() -> Unit = {}
     ) =
-  Course(title, semester, label, this).also {
+  Course(title, semester, label).also {
     it.build()
-    it.context
+    add(it)
     }

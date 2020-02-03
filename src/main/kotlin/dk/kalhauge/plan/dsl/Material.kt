@@ -17,98 +17,118 @@ class Material(
     ) : Targeting {
   enum class Category { PRESENTATION, EXERCISE, REPOSITORY, LOCAL, EXTERNAL }
 
-  init {
-    lecture.add(this)
-  }
-
-  override val hasResource get() = target is Resource
+  override val hasResource get() = target !is TargetProxy
   }
 
 fun Lecture.presentation(
-    path: String,
-    title: String? = null,
-    label: String? = null,
-    name: String? = null,
-    build: Material.() -> Unit = {}
-    ) =
-    Material(this,
-      cached(path, title, label, name),
-      Material.Category.PRESENTATION,
-      toFront = true,
-      active = true
-      ).also(build)
-
-fun Lecture.exercise(
-    path: String,
-    title: String? = null,
-    label: String? = null,
-    name: String? = null,
-    build: Material.() -> Unit = {}
-    ) =
-    Material(this,
-      cached(path, title, label, name),
-      Material.Category.EXERCISE,
-      toFront = false,
-      active = true
-      ).also(build)
-
-fun Lecture.repository(
     address: Address,
     title: String? = null,
     label: String? = null,
+    name: String? = null,
     build: Material.() -> Unit = {}
     ) =
+  Material(
+      this,
+      cached(address, title, label, name),
+      Material.Category.PRESENTATION,
+      toFront = true,
+      active = true
+      )
+    .also {
+    it.build()
+    add(it)
+    }
+
+fun Lecture.exercise(
+    address: Address,
+    title: String? = null,
+    label: String? = null,
+    name: String? = null,
+    build: Material.() -> Unit = {}
+  ) =
     Material(this,
-      Resource(address, title, label),
+      cached(address, title, label, name),
+      Material.Category.EXERCISE,
+      toFront = false,
+      active = true
+  ).also {
+  it.build()
+  add(it)
+  }
+
+fun Lecture.repository(
+    address: Address.Web,
+    title: String? = null,
+    label: String? = null,
+    build: Material.() -> Unit = {}
+  ) =
+    Material(this,
+      website(address, title, label),
       Material.Category.REPOSITORY,
       toFront = true,
       active = true
-      ).also(build)
+  ).also {
+  it.build()
+  add(it)
+  }
 
 fun Lecture.repository(
     label: String,
     build: Material.() -> Unit = {}
-    ) =
+  ) =
     Material(this,
-      TargetProxy(label),
+      TargetProxy(null, label),
       Material.Category.REPOSITORY,
       toFront = true,
       active = true
-      ).also(build)
+  ).also {
+  it.build()
+  add(it)
+  }
 
 fun Lecture.material(
     address: Address,
     title: String? = null,
     label: String? = null,
     build: Material.() -> Unit = {}
-    ) =
+  ) =
     Material(this,
-      Resource(address, title, label),
+      cached(address, title, label),
       Material.Category.LOCAL,
       toFront = false,
       active = true
-      ).also(build)
+  ).also {
+  it.build()
+  add(it)
+  }
 
 fun Lecture.externalLink(
-    address: Address,
+    address: Address.Web,
     title: String? = null,
     label: String? = null,
     build: Material.() -> Unit = {}
-    ) =
-  Material(this,
-    Resource(address, title, label),
-    Material.Category.EXTERNAL,
-    toFront = false,
-    active = true
-    ).also(build)
+  ) =
+    Material(this,
+      website(address, title, label),
+      Material.Category.EXTERNAL,
+      toFront = false,
+      active = true
+  ).also {
+  it.build()
+  add(it)
+  }
 
 fun Lecture.externalLink(
     label: String,
     build: Material.() -> Unit = {}
-    ) =
-  Material(this,
-    TargetProxy(label),
-    Material.Category.EXTERNAL,
-    toFront = false,
-    active = true
-    ).also(build)
+  ) =
+    Material(this,
+      TargetProxy(null, label),
+      Material.Category.EXTERNAL,
+      toFront = false,
+      active = true
+  ).also {
+  it.build()
+  add(it)
+  }
+

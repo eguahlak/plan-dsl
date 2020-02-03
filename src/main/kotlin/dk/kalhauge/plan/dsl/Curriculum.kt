@@ -1,11 +1,9 @@
 package dk.kalhauge.plan.dsl
 
-import dk.kalhauge.document.dsl.Paragraph
-import dk.kalhauge.document.dsl.Text
-import dk.kalhauge.document.dsl.text
+import dk.kalhauge.document.dsl.paragraph
 
 class Curriculum(val course: Course, val ects: Int) {
-  var content = Paragraph()
+  var content = paragraph()
   val objectives = mapOf<Taxonomy, MutableList<Objective>>(
     Taxonomy.KNOWLEDGE to mutableListOf(),
     Taxonomy.ABILITY to mutableListOf(),

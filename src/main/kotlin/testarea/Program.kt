@@ -1,10 +1,12 @@
 package testarea
 
 import dk.kalhauge.document.dsl.*
+import dk.kalhauge.document.dsl.structure.Prefixed
+import dk.kalhauge.document.dsl.structure.Tree
 import dk.kalhauge.document.handler.FileHost
 import dk.kalhauge.document.handler.GfmHandler
 import dk.kalhauge.plan.dsl.*
-import dk.kalhauge.plan.dsl.engine.context
+import dk.kalhauge.plan.dsl.engine.add
 import dk.kalhauge.plan.dsl.engine.docs
 
 val AKA = Teacher("AKA", "Anders Kalhauge", "21724411")
@@ -14,14 +16,25 @@ private val conf = Configuration(hasNumbers = true, hasTitle = true)
 private val resourcesRoot = conf["resources.root"]
 private val CL_203 = Room("CL-2.03")
 
-private fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(2020), "ALG") {
+private fun Tree.Trunk.tstCourse() = course("Algorithms and Datastructures", spring(2020), "ALG") {
     // https://www.cphbusiness.dk/media/78341/pba_soft_cba_studieordning_2017.pdf
     location = CL_203
     wednesday(morning)
-    overview { +"Dette er oversigten" }
+    overview += "Dette er oversigten"
     overview += "Hello there"
 
-    plan { +"The course is divided into four flows. The ..." }
+    book(
+      title = "Developer Testing",
+      label = "/TST-BOOK",
+      subtitle = "Building Quality into Software",
+      isbn = "978-0-13-429106-2",
+      edition = "1st",
+      editor = "Pearson",
+      url = "https://pearson.com/dev".web,
+      authors = "Jeff Langr"
+    )
+
+    plan += "The course is divided into four flows. The ..."
 
     flow("Sorting") {
       overview { +"Sorting can ..." }
@@ -37,29 +50,33 @@ private fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(
           is_able_to("choose an algorithm based on complexity") {
             fulfills("A1")
             fulfills("A2")
-          }
+            }
           objective("K2")
 
           activity { +"The following activities..." }
           read("Chapter 1", 1.0)
           write("Small assignment", 2.0)
-          repository(Address("https://github.com/eguahlak/plan-dsl.git"))
-          presentation("$resourcesRoot/sas5.pdf", "Something", label = "SAS")
-          exercise("$resourcesRoot/sas5.pdf", name = "ex1.pdf", title = "Exercise 1")
-        }
+          repository(Address.Web("https://github.com/eguahlak/plan-dsl.git"))
+          presentation(Address("$resourcesRoot/sas5.pdf"), "Something", label = "SAS")
+          exercise(Address("$resourcesRoot/sas5.pdf"), name = "ex1.pdf", title = "Exercise 1")
+          externalLink("http://www.kalhauge.dk".web) { toFront = true }
+          externalLink("https://cphbusiness.mrooms.net".web)
+          }
+
         lecture("Big oh") {
           teachers(AKA, TDI)
           friday("08:30" to "15:00")
           skill("the time complexity of an algorithm") {
             fulfills("S2")
-          }
+            }
           note = "for /test/"
           assignment("Mini project 1", 20.0, 15.0) {
-            target = cached("/Users/AKA/tmp/resources/assignment-1.pdf")
-          }
-          presentation("/Users/AKA/DatSoftLyngby/soft2019fall/docs/DM/week-38/04-regular-languages.pdf", "Regular Languages")
-          exercise("$resourcesRoot/sas5.pdf", "Exercise 2", "exercise2")
-          repository(Address("https://github.com/eguahlak/document-dsl.git"), "Eguahlak på GitHub", "DOC-DSL")
+            target = cached(Address("/Users/AKA/tmp/resources/assignment-1.pdf"))
+            }
+          presentation("/Users/AKA/DatSoftLyngby/soft2019fall/docs/DM/week-38/04-regular-languages.pdf".file, "Regular Languages")
+          exercise("$resourcesRoot/sas5.pdf".file, "Exercise 2", "exercise2")
+          repository("https://github.com/eguahlak/document-dsl.git".web, "Eguahlak på GitHub", "DOC-DSL")
+          externalLink("http://www.kalhauge.dk".web) { toFront = true }
         }
         lecture("Graphs")
       }
@@ -73,7 +90,9 @@ private fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(
         }
       }
       week(8) {
-        lecture("Merge sort") { }
+        lecture("Merge sort") {
+          overview += "See {/TST-BOOK} for more info"
+        }
       }
     }
 
@@ -114,10 +133,10 @@ private fun Folder.tstCourse() = course("Algorithms and Datastructures", spring(
     exam {
       +"""
      30 minutes oral exam, no preparation but questions known in advance.
-     A student shall have a minimum of 80 credits to attend the exam.
+     A student shall have a minimum of 80 {sec=assignments-and-credits} to attend the exam.
      """.trimIndent()
     }
-    exam += "Hello World!, Killroy was here"
+    exam += "Hello World!, Killroy was here twice"
   }
 
 
@@ -125,5 +144,5 @@ fun main() {
   val docs = docs("Test", "Cphbusiness SOFT 2020 Spring") {
     tstCourse()
     }
-  GfmHandler(FileHost(conf), docs).handle(printRelations = true, printTargets = true)
+  GfmHandler(FileHost(conf), docs).handle(printTargets = true)
   }

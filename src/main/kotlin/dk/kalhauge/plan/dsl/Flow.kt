@@ -1,9 +1,10 @@
 package dk.kalhauge.plan.dsl
 
 import dk.kalhauge.document.dsl.Text
+import dk.kalhauge.document.dsl.text
 
 class Flow(val course: Course, val title: String) {
-  var overview = GhostSection()
+  var overview = ghostSection()
   var skills: Text? = null
   val weeks = mutableListOf<Week>()
   val lectures get() = weeks.flatMap { it.lectures }
@@ -13,7 +14,7 @@ class Flow(val course: Course, val title: String) {
     }
 
   fun skills(build: Text.() -> Unit = {}) {
-    skills = Text().also(build)
+    skills = text().also(build)
     }
 
   fun add(week: Week): Int {

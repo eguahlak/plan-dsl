@@ -15,7 +15,7 @@ interface Objective {
   val fulfillments: Set<String>
   }
 
-class LocalObjective(
+class LectureObjective(
     val course: Course,
     override var title: Text,
     override val level: Taxonomy,
@@ -40,7 +40,7 @@ class ObjectiveReference(val course: Course, override val key: String) : Objecti
   override val fulfillments get() = course.getObjective(key).fulfillments
   }
 
-class GlobalObjective(
+class CourseObjective(
     val curriculum: Curriculum,
     override var title: Text,
     override val level: Taxonomy,
@@ -54,32 +54,32 @@ fun Lecture.objective(
     title: String,
     level: Taxonomy,
     key: String? = null,
-    build: LocalObjective.() -> Unit = {}
+    build: LectureObjective.() -> Unit = {}
     ) =
-  LocalObjective(course, text(title), level, key).also {
+  LectureObjective(course, text(title), level, key).also {
     it.build()
     add(it)
     if (key != null) course.add(it)
     }
 
-fun Lecture.knowledge(title: String, key: String? = null, build: LocalObjective.() -> Unit = {}) =
+fun Lecture.knowledge(title: String, key: String? = null, build: LectureObjective.() -> Unit = {}) =
   objective(title, Taxonomy.KNOWLEDGE, key, build)
-fun Lecture.ability(title: String, key: String? = null, build: LocalObjective.() -> Unit = {}) =
+fun Lecture.ability(title: String, key: String? = null, build: LectureObjective.() -> Unit = {}) =
   objective(title, Taxonomy.ABILITY, key, build)
-fun Lecture.skill(title: String, key: String? = null, build: LocalObjective.() -> Unit = {}) =
+fun Lecture.skill(title: String, key: String? = null, build: LectureObjective.() -> Unit = {}) =
   objective(title, Taxonomy.SKILL, key, build)
 
-fun Lecture.knows(title: String, key: String? = null, build: LocalObjective.() -> Unit = {}) =
+fun Lecture.knows(title: String, key: String? = null, build: LectureObjective.() -> Unit = {}) =
   objective(title, Taxonomy.KNOWLEDGE, key, build)
-fun Lecture.is_able_to(title: String, key: String? = null, build: LocalObjective.() -> Unit = {}) =
+fun Lecture.is_able_to(title: String, key: String? = null, build: LectureObjective.() -> Unit = {}) =
   objective(title, Taxonomy.ABILITY, key, build)
-fun Lecture.have_the_skills_to(title: String, key: String? = null, build: LocalObjective.() -> Unit = {}) =
+fun Lecture.have_the_skills_to(title: String, key: String? = null, build: LectureObjective.() -> Unit = {}) =
   objective(title, Taxonomy.SKILL, key, build)
 
 fun Lecture.objective(key: String) =
   ObjectiveReference(course, key).also { add(it) }
 
-fun LocalObjective.fulfills(key: String) { add(key) }
+fun LectureObjective.fulfills(key: String) { add(key) }
 
 fun Curriculum.objective(
     title: String,
@@ -87,7 +87,7 @@ fun Curriculum.objective(
     key: String? = null,
     build: Objective.() -> Unit = {}
     ) =
-  GlobalObjective(this, text(title), level, key ?: keyFor(level)).also {
+  CourseObjective(this, text(title), level, key ?: keyFor(level)).also {
     it.build()
     add(it)
     course.add(it)

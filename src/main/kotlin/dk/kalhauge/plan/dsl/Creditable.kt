@@ -1,9 +1,7 @@
 package dk.kalhauge.plan.dsl
 
-import dk.kalhauge.document.dsl.Resource
-import dk.kalhauge.document.dsl.Text
+import dk.kalhauge.document.dsl.*
 import dk.kalhauge.document.dsl.Target
-import dk.kalhauge.document.dsl.text
 
 interface Creditable {
   val credits: Double
@@ -28,7 +26,7 @@ class Assignment(
     override val credits: Double,
     override var target: Target?
     ) : Activity(lecture, title, ActivityType.WORK, load), Creditable, Targeting {
-  override val hasResource get() = target?.let { it is Resource } ?: false
+  override val hasResource get() = target?.let { it !is TargetProxy } ?: false
   }
 
 fun Lecture.assignment(
