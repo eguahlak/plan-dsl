@@ -50,6 +50,24 @@ fun docs(title: String, subtitle: String, build: Tree.BaseTrunk.() -> Unit = {})
       """.trimIndent(),
       mapOf("title" to title, "subtitle" to subtitle)
       )
+    folder("assets") {
+      folder("css") {
+        file("style.scss",
+          """
+          ---
+          ---
+
+          @import "{{ site.theme }}";
+          h6 {
+            font-size: medium;
+            font-style: normal;
+            color: black;
+            font-weight: normal;
+            }
+          """.trimIndent()
+          )
+        }
+      }
     build()
     }
   }
