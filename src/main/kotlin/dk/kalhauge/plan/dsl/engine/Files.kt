@@ -64,6 +64,12 @@ fun docs(title: String, subtitle: String, build: Tree.BaseTrunk.() -> Unit = {})
             color: black;
             font-weight: normal;
             }
+          .main-content h6 {
+            margin-top: 1rem;
+            margin-bottom: 0rem;
+            font-weight: normal;
+            color: black
+            }
           """.trimIndent()
           )
         }
