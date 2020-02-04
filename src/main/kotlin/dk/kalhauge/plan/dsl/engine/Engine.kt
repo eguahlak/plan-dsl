@@ -51,7 +51,7 @@ fun Tree.Trunk.add(course: Course) {
           } }
         add(week.overview)
         week.lectures.forEach { lecture ->
-          section(lecture.title, "L${lecture.code}") {
+          section(lecture.title, "L${lecture.code}", number = lecture.number) {
             paragraph("*Time:* ${lecture.timeSlot.dayText} ${lecture.timeSlot.timeText}")
             paragraph("*Location:* ${lecture.timeSlot.location}")
             when (lecture.teachers.size) {
