@@ -65,9 +65,13 @@ fun Tree.Trunk.add(course: Course) {
               list {
                 lecture.objectives.sortedBy { it.level }.forEach { objective ->
                   if (objective.fromCurriculum)
-                    paragraph("*${taxonomiHeader(objective.level)} ${objective.title}*")
+                    paragraph {
+                      bold("${taxonomiHeader(objective.level)} ").add(objective.title)
+                      }
                   else
-                    paragraph("${taxonomiHeader(objective.level)} ${objective.title}")
+                    paragraph {
+                      text("${taxonomiHeader(objective.level)} ").add(objective.title)
+                      }
                   }
                 }
               }
@@ -83,7 +87,12 @@ fun Tree.Trunk.add(course: Course) {
                         text(" - (${activity.load})")
                         }
                       }
-                    else -> paragraph("${activityHeader(activity.type)} ${activity.title} - (${activity.load})")
+                    else -> paragraph {
+                      text("${activityHeader(activity.type)} ").apply {
+                        add(activity.title)
+                        text(" - (${activity.load})")
+                        }
+                      }
                     }
                   }
                 paragraph("In class activities - (${lecture.timeSlot.load})")

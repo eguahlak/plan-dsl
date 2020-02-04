@@ -54,7 +54,7 @@ private fun Tree.Trunk.tstCourse() = course("Algorithms and Datastructures", spr
           objective("K2")
 
           activity { +"The following activities..." }
-          read("Chapter 1", 1.0)
+          read("Chapter 1 in {/TST-BOOK}", 1.0)
           write("Small assignment", 2.0)
           repository(Address.Web("https://github.com/eguahlak/plan-dsl.git"))
           presentation(Address("$resourcesRoot/sas5.pdf"), "Something", label = "SAS")
