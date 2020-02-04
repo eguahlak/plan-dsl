@@ -11,15 +11,15 @@ import dk.kalhauge.plan.dsl.Taxonomy.*
 fun lectureLink(lecture: Lecture) =
   if (lecture.week.active) text {
     text("${lecture.code} ")
-    reference("../week-${lecture.week.code}/${lecture.week.documentName}/L${lecture.code}", title = lecture.title)
+    reference("../week-${lecture.week.code}/${Week.documentName}/L${lecture.code}", title = lecture.title)
     }
   else text("${lecture.code} ${lecture.title}")
 
 fun shortLectureLink(lecture: Lecture) =
   if (lecture.week.active) text {
-    reference("../week-${lecture.week.code}/${lecture.week.documentName}/L${lecture.code}", title = lecture.code)
+    reference("../week-${lecture.week.code}/${Week.documentName}/L${lecture.code}", title = lecture.code)
     }
-  else text("${lecture.code}")
+  else text(lecture.code)
 
 fun taxonomiHeader(taxonomy: Taxonomy) = when (taxonomy) {
   KNOWLEDGE -> "/knows/"
@@ -37,15 +37,15 @@ fun activityHeader(type: ActivityType) = when (type) {
 fun Tree.Trunk.add(course: Course) {
   folder(course.label) {
     course.weeks.forEach { week ->
-      document("week-${week.code}/${week.documentName}", week.title) {
+      document("week-${week.code}/${Week.documentName}", week.title) {
         paragraph { text {
           week.previous?.let { prev ->
             text(":point__left: ")
-            reference("../../week-${prev.code}/${week.documentName}")
+            reference("../../week-${prev.code}/${Week.documentName}")
             }
-          reference("../../${course.documentName}", title = " :point__up: ")
+          reference("../../${Course.documentName}", title = " :point__up: ")
           week.next?.let { next ->
-            reference("../../week-${next.code}/${week.documentName}")
+            reference("../../week-${next.code}/${Week.documentName}")
             text(" :point__right:")
             }
           } }
@@ -88,7 +88,7 @@ fun Tree.Trunk.add(course: Course) {
                   }
                 paragraph("In class activities - (${lecture.timeSlot.load})")
                 list {
-                  lecture.materials.filter { it.category == Material.Category.EXERCISE }.forEach {
+                  lecture.materials.filter { it.category == EXERCISE }.forEach {
                     paragraph { reference(it.target) }
                     }
                   }
@@ -114,7 +114,7 @@ fun Tree.Trunk.add(course: Course) {
           }
         }
       }
-    document(course.documentName, "${course.title}") {
+    document(Course.documentName, course.title) {
       toc(2)
       course.curriculum?.let {
         paragraph {
@@ -136,7 +136,7 @@ fun Tree.Trunk.add(course: Course) {
               left("Notes")
               flow.lectures.forEach { lecture ->
                 row {
-                  paragraph { reference("../week-${lecture.week.code}/${lecture.week.documentName}", lecture.week.code) }
+                  paragraph { reference("../week-${lecture.week.code}/${Week.documentName}", lecture.week.code) }
                   paragraph(lecture.timeSlot.dayText)
                   paragraph(lecture.timeSlot.timeText)
                   paragraph { add(lectureLink(lecture)) }
@@ -203,7 +203,7 @@ fun Tree.Trunk.add(course: Course) {
       add(course.exam)
       }
     course.curriculum?.let { curriculum ->
-      document("curriculum", "${course.title}") {
+      document("curriculum", course.title) {
         section("Indhold") { add(curriculum.content) }
         curriculumObjectiveSection(curriculum, KNOWLEDGE, "Viden /knowledge/", "Den studerende har viden om:")
         curriculumObjectiveSection(curriculum, ABILITY, "Færdigheder /abilities/", "Den studerende kan:")
@@ -245,7 +245,7 @@ fun Tree.Trunk.add(course: Course) {
             left("Code")
             left("Objective")
             right("Lecture")
-            curriculum.objectives.values.flatMap { it }.forEach { objective ->
+            curriculum.objectives.values.flatten().forEach { objective ->
               row {
                 paragraph(objective.key)
                 paragraph(objective.title)
@@ -321,7 +321,7 @@ fun Block.BaseParent.courseResourceSection(
     title: String,
     category: Material.Category
     ): Int {
-  var specifics = materials.filter { it.category == category }
+  val specifics = materials.filter { it.category == category }
   if (specifics.isEmpty()) return 0
   section(title) {
     list {
@@ -372,19 +372,20 @@ fun Block.BaseParent.lectureObjectiveSection(lectures: List<Lecture>, title: Str
   }
 
 fun List<String>.joinEnglish() =
-  if (this.size == 1) this[0]
-  else if (this.size == 2) "${this[0]} and ${this[1]}"
-  else "${this.take(this.size - 1).joinToString(", ")}, and ${this.last()}"
+  when (this.size) {
+    1 -> this[0]
+    2 -> "${this[0]} and ${this[1]}"
+    else -> "${this.take(this.size - 1).joinToString(", ")}, and ${this.last()}"
+    }
 
 fun Document.courseList(trunk: Tree.Trunk? = null, documentName: String = "README") {
   val folder = trunk ?: this.trunk
   list {
     folder.branches.filterIsInstance<Folder>().forEach { folder ->
       val courseDocument =
-          folder.branches
-            .filterIsInstance<Document>()
-            .filter { it.name == documentName }
-            .firstOrNull()
+        folder.branches
+          .filterIsInstance<Document>()
+          .firstOrNull { it.name == documentName }
       if (courseDocument != null)
         paragraph { reference(courseDocument) }
       }

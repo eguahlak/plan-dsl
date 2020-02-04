@@ -33,7 +33,9 @@ fun Block.Parent.add(ghostSection: GhostSection) {
   }
 
 class Course(val title: String, val semester: Semester, val label: String) {
-  var documentName = "README"
+  companion object {
+    var documentName = "README"
+    }
   val teachers = mutableSetOf<Teacher>()
   var location: Location = Somewhere
   val schedule = mutableListOf<TimeSlot>()

@@ -5,7 +5,9 @@ import dk.kalhauge.document.dsl.paragraph
 import dk.kalhauge.plan.dsl.engine.joinEnglish
 
 class Week(val flow: Flow, val number: Int, title: String) {
-  var documentName = "README"
+  companion object {
+    var documentName = "README"
+    }
   var active = true
   var overview = ghostSection()
   val lectures = mutableListOf<Lecture>()
