@@ -58,17 +58,28 @@ fun docs(title: String, subtitle: String, build: Tree.BaseTrunk.() -> Unit = {})
           ---
 
           @import "{{ site.theme }}";
-          h6 {
-            font-size: medium;
-            font-style: normal;
-            color: black;
-            font-weight: normal;
-            }
           .main-content h6 {
             margin-top: 1rem;
-            margin-bottom: 0rem;
+            margin-bottom: -1rem;
+            font-size: 1.1rem;
+            font-style: normal;
             font-weight: normal;
             color: black
+            }
+          @media screen and (min-width: 64em) {
+            .main-content h6 {
+              font-size:1.1rem
+              }
+            }
+          @media screen and (min-width: 42em) and (max-width: 64em) {
+            .main-content h6 {
+              font-size:1.1rem
+              }
+            }
+          @media screen and (max-width: 42em) {
+            .main-content h6 {
+              font-size:1rem
+              }
             }
           """.trimIndent()
           )
