@@ -82,8 +82,10 @@ fun Tree.Trunk.add(course: Course) {
                 lecture.activities.forEach { activity ->
                   when (activity) {
                     is Assignment -> paragraph {
+                      val target = activity.target
                       text {
-                        reference(activity.target!!, activity.title)
+                        if (target == null) add(activity.title)
+                        else reference(target, activity.title)
                         text(" - (${activity.load})")
                         }
                       }

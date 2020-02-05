@@ -9,8 +9,8 @@ import dk.kalhauge.plan.dsl.*
 import dk.kalhauge.plan.dsl.engine.add
 import dk.kalhauge.plan.dsl.engine.docs
 
-val AKA = Teacher("AKA", "Anders Kalhauge", "21724411")
-val TDI = Teacher("TDI", "Todorka Stoyanova Dimitrova", null)
+private val AKA = Teacher("AKA", "Anders Kalhauge", "21724411")
+private val TDI = Teacher("TDI", "Todorka Stoyanova Dimitrova", null)
 
 private val conf = Configuration(hasNumbers = true, hasTitle = true)
 private val resourcesRoot = conf["resources.root"]
@@ -140,7 +140,7 @@ private fun Tree.Trunk.tstCourse() = course("Algorithms and Datastructures", spr
   }
 
 
-fun main() {
+private fun main() {
   val docs = docs("Test", "Cphbusiness SOFT 2020 Spring") {
     tstCourse()
     }

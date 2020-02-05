@@ -39,6 +39,20 @@ fun Lecture.presentation(
     add(it)
     }
 
+fun Lecture.presentation(
+    label: String,
+    build: Material.() -> Unit = {}
+    ) =
+  Material(this,
+    TargetProxy(null, label),
+    Material.Category.PRESENTATION,
+    toFront = false,
+    active = true
+    ).also {
+    it.build()
+    add(it)
+    }
+
 fun Lecture.exercise(
     address: Address,
     title: String? = null,
@@ -55,6 +69,20 @@ fun Lecture.exercise(
   it.build()
   add(it)
   }
+
+fun Lecture.exercise(
+    label: String,
+    build: Material.() -> Unit = {}
+    ) =
+  Material(this,
+    TargetProxy(null, label),
+    Material.Category.EXERCISE,
+    toFront = false,
+    active = true
+    ).also {
+    it.build()
+    add(it)
+    }
 
 fun Lecture.repository(
     address: Address.Web,
@@ -79,7 +107,7 @@ fun Lecture.repository(
     Material(this,
       TargetProxy(null, label),
       Material.Category.REPOSITORY,
-      toFront = true,
+      toFront = false,
       active = true
   ).also {
   it.build()
@@ -101,6 +129,20 @@ fun Lecture.material(
   it.build()
   add(it)
   }
+
+fun Lecture.material(
+    label: String,
+    build: Material.() -> Unit = {}
+    ) =
+  Material(this,
+    TargetProxy(null, label),
+    Material.Category.LOCAL,
+    toFront = false,
+    active = true
+    ).also {
+    it.build()
+    add(it)
+    }
 
 fun Lecture.externalLink(
     address: Address.Web,
