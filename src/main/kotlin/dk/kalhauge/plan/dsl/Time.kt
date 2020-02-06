@@ -50,8 +50,8 @@ class TimeSlot(
     val T1400 = TimeOfDay(14*60) //"14:00".toTimeOfDay()
     val T1600 = TimeOfDay(16*60) //"16:00".toTimeOfDay()
     }
-  val startText get() = if (start in listOf(T0830, T1230)) start.toString() else "*$start*"
-  val endText get() = if (end in listOf(T1200, T1400, T1600)) end.toString() else "*$end*"
+  val startText get() = start.toString()
+  val endText get() = end.toString()
   val timeText get() = if (weekDay == WeekDay.TBD) "/To be decided/" else "$startText-$endText"
   val load = load ?: end.toHours() - start.toHours() - if (start < T1200 && T1230 < end) 0.5 else 0.0
   val dayText get() = when (weekDay) {
