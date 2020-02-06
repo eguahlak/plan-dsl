@@ -55,13 +55,13 @@ class TimeSlot(
   val timeText get() = if (weekDay == WeekDay.TBD) "/To be decided/" else "$startText-$endText"
   val load = load ?: end.toHours() - start.toHours() - if (start < T1200 && T1230 < end) 0.5 else 0.0
   val dayText get() = when (weekDay) {
-    WeekDay.MONDAY ->    " MON "
-    WeekDay.TUESDAY ->   " TUE "
-    WeekDay.WEDNESDAY -> " WED "
-    WeekDay.THURSDAY ->  " THU "
-    WeekDay.FRIDAY ->    " FRI "
-    WeekDay.SATURDAY ->  "*SAT*"
-    WeekDay.SUNDAY ->    "*SUN*"
+    WeekDay.MONDAY ->    "MON"
+    WeekDay.TUESDAY ->   "TUE"
+    WeekDay.WEDNESDAY -> "WED"
+    WeekDay.THURSDAY ->  "THU"
+    WeekDay.FRIDAY ->    "FRI"
+    WeekDay.SATURDAY ->  "/SAT/"
+    WeekDay.SUNDAY ->    "/SUN/"
     WeekDay.TBD ->       "/TBD/"
     }
 
