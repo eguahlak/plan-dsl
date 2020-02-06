@@ -7,8 +7,17 @@ class Lecture(val week: Week, val title: String) {
   fun teachers(vararg teachers: Teacher) {
     teachers.forEach { add(it) }
     }
-  var timeSlot: TimeSlot
   val course get() = week.course
+
+  var isAsScheduled: Boolean = true
+    private set
+
+  var timeSlot: TimeSlot = course.schedule.getOrElse(week.lectures.size) { TBD }
+    set(value) {
+      isAsScheduled = false
+      field = value
+      }
+
   val number =  course.nextLectureNumber++
   val code get() = if (number < 10) "0$number" else "$number"
   var note = " "
@@ -28,7 +37,6 @@ class Lecture(val week: Week, val title: String) {
 
 
   init {
-    timeSlot = course.schedule.getOrElse(week.lectures.size, { TBD })
     week.add(this)
     }
 

@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'dk.kalhauge'
-version '2.1.13'
+version '2.1.14'
 
 sourceCompatibility = 1.8
 
@@ -21,9 +21,15 @@ repositories {
     }
 }
 
+
+configurations {
+    documentDsl
+    }
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "dk.kalhauge:document-dsl:2.1.9"
+    implementation "dk.kalhauge:document-dsl:2.1.10"
+    documentDsl "dk.kalhauge:document-dsl:2.1.10"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
@@ -33,6 +39,14 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+jar {
+    def libBuildDir = mkdir "${buildDir}/resources/main/lib"
+    copy {
+        from { configurations.documentDsl }
+        into { libBuildDir }
+        }
+    }
 
 publishing {
     repositories {

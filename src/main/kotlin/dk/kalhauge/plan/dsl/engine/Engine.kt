@@ -148,8 +148,14 @@ fun Tree.Trunk.add(course: Course) {
               flow.lectures.forEach { lecture ->
                 row {
                   paragraph { reference("../week-${lecture.week.code}/${Week.documentName}", lecture.week.code) }
-                  paragraph(lecture.timeSlot.dayText)
-                  paragraph(lecture.timeSlot.timeText)
+                  if (lecture.isAsScheduled) {
+                    paragraph(lecture.timeSlot.dayText)
+                    paragraph(lecture.timeSlot.timeText)
+                    }
+                  else {
+                    paragraph("*${lecture.timeSlot.dayText}*")
+                    paragraph("*${lecture.timeSlot.timeText}*")
+                    }
                   paragraph { add(lectureLink(lecture)) }
                   paragraph("${lecture.workLoad}")
                   paragraph{
