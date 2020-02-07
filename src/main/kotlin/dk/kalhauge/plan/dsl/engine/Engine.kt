@@ -240,7 +240,7 @@ fun Tree.Trunk.add(course: Course) {
           }
         }
       add(course.exam)
-      paragraph("Calendar subscription link: `https://datsoftlyngby.github.io/soft2020spring/{$course.label}/calendar.ical`")
+      paragraph("Calendar subscription link: `https:////datsoftlyngby.github.io//soft2020spring//${course.label}//calendar.ical`")
       }
     course.curriculum?.let { curriculum ->
       document("curriculum", course.title) {
