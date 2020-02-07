@@ -1,6 +1,7 @@
 package dk.kalhauge.plan.dsl
 
 import dk.kalhauge.document.dsl.paragraph
+import java.time.LocalDateTime
 
 class Lecture(val week: Week, val title: String) {
   val teachers = mutableListOf<Teacher>()
@@ -34,7 +35,11 @@ class Lecture(val week: Week, val title: String) {
 
   val materials = mutableListOf<Material>()
 
+  val start: LocalDateTime
+    get() = localDateTime(course.semester.year, week.number, timeSlot.weekDay, timeSlot.start)
 
+  val end: LocalDateTime
+    get() = localDateTime(course.semester.year, week.number, timeSlot.weekDay, timeSlot.end)
 
   init {
     week.add(this)

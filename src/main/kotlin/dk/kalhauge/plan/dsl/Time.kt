@@ -25,6 +25,8 @@ class TimeOfDay(val minutes: Int) : Comparable<TimeOfDay> {
   override fun compareTo(other: TimeOfDay) = this.minutes.compareTo(other.minutes)
   override fun equals(other: Any?) =
     other != null && other is TimeOfDay && this.minutes == other.minutes
+  val hour get() = minutes/60
+  val minute get() = minutes%60
   }
 
 fun String.toTimeOfDay(): TimeOfDay {

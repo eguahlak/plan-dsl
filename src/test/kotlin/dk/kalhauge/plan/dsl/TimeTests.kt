@@ -37,4 +37,15 @@ class TimeTests {
     assertEquals("Load is overridden", 4.0, TimeSlot(WeekDay.THURSDAY, workshop, CL_203, 4.0).load, delta)
     }
 
+  @Test
+  fun testLocaleDateTime1() {
+    val ldt = localDateTime(2020, 6, WeekDay.FRIDAY, TimeOfDay(630))
+    assertEquals("2020-02-07T10:30", ldt.toString())
+    }
+
+  @Test
+  fun testLocaleDateTime2() {
+    val ldt = localDateTime(2022, 6, WeekDay.FRIDAY, TimeOfDay(630))
+    assertEquals("2022-02-11T10:30", ldt.toString())
+    }
   }

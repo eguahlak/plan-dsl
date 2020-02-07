@@ -1,5 +1,7 @@
 package dk.kalhauge.plan.dsl.engine
 
+import dk.kalhauge.calendar.dsl.calendar
+import dk.kalhauge.calendar.dsl.event
 import dk.kalhauge.document.dsl.*
 import dk.kalhauge.document.dsl.structure.Block
 import dk.kalhauge.document.dsl.structure.Tree
@@ -34,8 +36,26 @@ fun activityHeader(type: ActivityType) = when (type) {
   WORK -> "*Do*"
   }
 
+fun Folder.calendarFor(course: Course) {
+  val calendar = calendar {
+    course.lectures.forEach { lecture ->
+      event(
+          "${course.label}/W${lecture.week.code}/L${lecture.code}",
+          lecture.start,
+          lecture.end,
+          course.title
+          ) {
+        description = lecture.title
+        }
+      }
+    }
+  file("calendar.ical", calendar.toString())
+  }
+
+
 fun Tree.Trunk.add(course: Course) {
   folder(course.label) {
+    calendarFor(course)
     course.weeks.forEach { week ->
       document("week-${week.code}/${Week.documentName}", week.title) {
         paragraph { text {
