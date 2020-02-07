@@ -3,6 +3,7 @@ package dk.kalhauge.plan.dsl
 import dk.kalhauge.document.dsl.Address
 import dk.kalhauge.util.of
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.temporal.WeekFields
 import java.util.*
 
@@ -18,7 +19,7 @@ val String.file get() = Address.Disk(this)
 
 fun localDateTime(year: Int, week: Int, weekDay: WeekDay, time: TimeOfDay): LocalDateTime {
   // TODO check default
-  val weekFields = WeekFields.of(Locale.GERMAN)
+  val weekFields = WeekFields.of(Locale.GERMANY)
   return LocalDateTime.now()
     .withYear(year)
     .with(weekFields.weekOfYear(), week.toLong())

@@ -3,6 +3,7 @@ package dk.kalhauge.calendar.dsl
 import dk.kalhauge.document.handler.Host
 import dk.kalhauge.util.toMD5
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 fun Host.printCalendarLine(line: String) {
@@ -22,13 +23,6 @@ class Calendar(
     ) {
   val events = mutableListOf<Event>()
   fun add(event: Event) { events += event }
-  fun printTo(host: Host) {
-    host.printCalendarLine("BEGIN:VCALENDAR")
-    host.printCalendarLine("PRODID:$productId")
-    host.printCalendarLine("VERSION:$version")
-    events.forEach { it.printTo(host) }
-    host.printCalendarLine("END:VCALENDAR")
-    }
   fun appendTo(builder: StringBuilder) {
     builder.appendCalendarLine("BEGIN:VCALENDAR")
     builder.appendCalendarLine("PRODID:$productId")
@@ -59,17 +53,6 @@ class Event(
     ) {
   var description: String? = null
   val stamp = LocalDateTime.now()
-  fun printTo(host: Host) {
-    host.printCalendarLine("BEGIN:VEVENT")
-    host.printCalendarLine("UID:${id.toMD5()}")
-    host.printCalendarLine("DTSTAMP:${stamp.toCal()}")
-    host.printCalendarLine("DTSTART:${start.toCal()}")
-    host.printCalendarLine("DTEND:${end.toCal()}")
-    host.printCalendarLine("SUMMARY:$summary")
-    if (description != null)
-      host.printCalendarLine("DESCRIPTION:$description")
-    host.printCalendarLine("END:VEVENT")
-    }
   fun appendTo(builder: StringBuilder) {
     builder.appendCalendarLine("BEGIN:VEVENT")
     builder.appendCalendarLine("UID:${id.toMD5()}")
@@ -79,6 +62,7 @@ class Event(
     builder.appendCalendarLine("SUMMARY:$summary")
     if (description != null)
       builder.appendCalendarLine("DESCRIPTION:$description")
+    builder.appendCalendarLine("GEO:55.7687;12.5000")
     builder.appendCalendarLine("END:VEVENT")
     }
 
@@ -94,13 +78,7 @@ fun Calendar.event(
   add(it)
   }
 
-val FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'")
+val FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'").withZone(ZoneId.of("Europe/Paris"))
 
-fun LocalDateTime.toCal() = format(FORMAT)
+fun LocalDateTime.toCal() = minusHours(1).format(FORMAT)
 
-
-fun main() {
-  val day = LocalDateTime.of(2020, 2, 13, 10, 33, 7, 0)
-  println(day)
-  println(day.toCal())
-  }
