@@ -1,9 +1,6 @@
 package docs
 
-import dk.kalhauge.document.dsl.Configuration
-import dk.kalhauge.document.dsl.code
-import dk.kalhauge.document.dsl.document
-import dk.kalhauge.document.dsl.paragraph
+import dk.kalhauge.document.dsl.*
 import dk.kalhauge.document.handler.FileHost
 import dk.kalhauge.document.handler.GfmHandler
 import dk.kalhauge.plan.dsl.engine.docs
@@ -46,6 +43,25 @@ fun main() {
         GITHUB_USER=eguahlak
         GITHUB_PACKAGES=a011e...
         """.trimIndent())
+      paragraph("""
+        Until GitHub removes authentication on packages from public repositories
+        you need to get the `GITHUB__PACKAGES value from me.`""".trimIndent())
+
+      section("Setup") {
+        list {
+          paragraph("Create a GitHub repository eg.: `soft2020spring` and clone it to your computer")
+          paragraph("Create a `docs` folder for the GitHub pages")
+          paragraph("Create a Kotlin VM project in a `dsl` folder for the Kotlin project")
+          paragraph("Create a `.gitignore` file in the `dsl` folder")
+          code("""
+            .idea/
+            out/
+            build/
+            """.trimIndent())
+          paragraph("Add, commit, and push the content")
+          paragraph("Enable GitHub Pages from `docs`")
+          }
+        }
       }
 
     }
