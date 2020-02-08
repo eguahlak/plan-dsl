@@ -1,6 +1,9 @@
 name: Building plan-dsl Artifact
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'build.gradle'
 
 jobs:
   build:

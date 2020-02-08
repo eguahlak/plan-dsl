@@ -1,0 +1,5 @@
+theme: jekyll-theme-cayman
+title: plan-dsl
+description: Course description specific language
+plugins:
+  - jemoji
