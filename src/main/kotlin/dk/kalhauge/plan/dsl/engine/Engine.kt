@@ -48,6 +48,8 @@ fun Folder.calendarFor(course: Course) {
         description = """
           ${lecture.title}
           """.trimIndent()
+        location = lecture.timeSlot.location.name
+        url = "https://datsoftlyngby.github.io/soft2020spring/${course.label}/week-${lecture.week.code}/"
         }
       }
     }

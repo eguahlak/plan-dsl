@@ -52,6 +52,8 @@ class Event(
     var summary: String
     ) {
   var description: String? = null
+  var location: String? = null
+  var url: String? = null
   val stamp = LocalDateTime.now()
   fun appendTo(builder: StringBuilder) {
     builder.appendCalendarLine("BEGIN:VEVENT")
@@ -60,9 +62,13 @@ class Event(
     builder.appendCalendarLine("DTSTART:${start.toCal()}")
     builder.appendCalendarLine("DTEND:${end.toCal()}")
     builder.appendCalendarLine("SUMMARY:$summary")
-    if (description != null)
+    if (description != null) {
       builder.appendCalendarLine("DESCRIPTION:$description")
-    builder.appendCalendarLine("GEO:55.7687;12.5000")
+      if (url != null)
+        builder.appendCalendarLine("""X-ALT-DESC;FMTTYPE=text/html:<html><body>Go to <a href="$url">$description</a></body></html>""")
+      }
+    if (location != null)
+      builder.appendCalendarLine("LOCATION:$location")
     builder.appendCalendarLine("END:VEVENT")
     }
 
