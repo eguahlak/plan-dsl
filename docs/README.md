@@ -32,3 +32,21 @@ GITHUB_USER=eguahlak
 GITHUB_PACKAGES=a011e...
 ```
 
+Until GitHub removes authentication on packages from public repositories
+you need to get the `GITHUB\_PACKAGES value from me.`  
+
+# Setup
+
+ * Create a GitHub repository eg.: `soft2020spring` and clone it to your computer
+ * Create a `docs` folder for the GitHub pages
+ * Create a Kotlin VM project in a `dsl` folder for the Kotlin project
+ * Create a `.gitignore` file in the `dsl` folder
+```
+.idea/
+out/
+build/
+```
+
+ * Add, commit, and push the content
+ * Enable GitHub Pages from `docs`
+
