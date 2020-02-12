@@ -7,6 +7,7 @@ Cphbusiness, and to create consistent sites for students using GitHub Pages.
        * [Gradle](#gradle)
        * [Code Skelleton](#code-skelleton)
        * [Flows in separate files](#flows-in-separate-files)
+     * [Text Types](#text-types)
      * [The `Course` class](#the-course-class)
 
 # Setup
@@ -168,6 +169,26 @@ fun Course.firstFlow() = flow("The first flow") {
   // ...
   }
 ```
+
+## Text Types
+
+Text can be input at different document levels,
+depending on the attribute.
+The hierarchy is as follows:  
+
+ * Document
+   * Section
+     * Section
+     * Paragraph
+     * List
+     * Code
+   * Paragraph
+     * Text
+   * List
+     * Paragraph
+     * List
+     * Code
+   * Code
 
 ## The `Course` class
 

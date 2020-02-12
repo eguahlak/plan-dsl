@@ -8,7 +8,7 @@ import dk.kalhauge.document.dsl.structure.FreeContext
 import dk.kalhauge.document.dsl.structure.Tree
 import dk.kalhauge.plan.dsl.engine.add
 
-class GhostSection(context: Context?) : Block.BaseParent() {
+class AnonymousSection(context: Context?) : Block.BaseParent() {
   val context = context ?: FreeContext
 
   override val children = mutableListOf<Block.Child>()
@@ -18,18 +18,18 @@ class GhostSection(context: Context?) : Block.BaseParent() {
   override fun register(target: Target) = context.register(target)
   override fun find(key: String) = context.find(key)
 
-  operator fun invoke(build: GhostSection.() -> Unit) { build() }
+  operator fun invoke(build: AnonymousSection.() -> Unit) { build() }
   // TODO align with Paragraph.plusAssign
   operator fun plusAssign(text: Text) { paragraph { add(text) } }
   operator fun plusAssign(content: String) { plusAssign(text(content)) }
   }
 
-fun Block.BaseParent.ghostSection() = GhostSection(this)
+fun Block.BaseParent.anonymousSection() = AnonymousSection(this)
 
-fun ghostSection() = GhostSection(null)
+fun anonymousSection() = AnonymousSection(null)
 
-fun Block.Parent.add(ghostSection: GhostSection) {
-  ghostSection.children.forEach { add(it) }
+fun Block.Parent.add(anonymousSection: AnonymousSection) {
+  anonymousSection.children.forEach { add(it) }
   }
 
 class Course(val title: String, val semester: Semester, val label: String) {
@@ -40,7 +40,7 @@ class Course(val title: String, val semester: Semester, val label: String) {
   var location: Location = Somewhere
   val schedule = mutableListOf<TimeSlot>()
 
-  val overview = ghostSection()
+  val overview = anonymousSection()
 
   var plan = section("Plan")
   val flows = mutableListOf<Flow>()

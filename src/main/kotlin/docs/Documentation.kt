@@ -151,7 +151,7 @@ fun main() {
           section("Flows in separate files") {
             paragraph("""
               It might be convenient to put flow definitions in separate files,
-              otherwise the document file will grow very long.""".trimIndent())
+              otherwise the course file will grow very long.""".trimIndent())
             paragraph("In the main file:")
             kotlin("""
               fun Tree.Trunk.tstCourse() = course("Course Title", spring(2020), "CODE") {
@@ -171,6 +171,40 @@ fun main() {
               """.trimIndent())
             }
           }
+        section("Text Types") {
+          paragraph("""
+            Text can be input at different document levels,
+            depending on the attribute.
+            The hierarchy is as follows:
+            """.trimIndent())
+          list {
+            paragraph("Document")
+            list {
+              paragraph("Section")
+              list {
+                paragraph("Section")
+                paragraph("Paragraph")
+                paragraph("List")
+                paragraph("Code")
+                }
+              paragraph("Paragraph")
+              list {
+                paragraph("Text")
+                }
+              paragraph("List")
+              list {
+                paragraph("Paragraph")
+                paragraph("List")
+                paragraph("Code")
+                }
+              paragraph("Code")
+              }
+            }
+          }
+        paragraph("""
+          The `document` will already be created by the course or the week.
+          
+          """.trimIndent())
         section("The `Course` class") {
 
           }

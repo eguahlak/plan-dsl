@@ -23,7 +23,7 @@ class Lecture(val week: Week, val title: String) {
   val code get() = if (number < 10) "0$number" else "$number"
   var note = " "
   val workLoad: Double get() = activities.map { it.load }.sum() + timeSlot.load
-  var overview = ghostSection()
+  var overview = anonymousSection()
 
   var objective = paragraph()
   val objectives = mutableListOf<Objective>()
@@ -31,7 +31,7 @@ class Lecture(val week: Week, val title: String) {
   var activity = paragraph()
   val activities = mutableListOf<Activity>()
 
-  val content = ghostSection()
+  val content = anonymousSection()
 
   val materials = mutableListOf<Material>()
 
