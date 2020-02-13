@@ -49,7 +49,7 @@ fun Folder.calendarFor(course: Course) {
           ${lecture.title}
           """.trimIndent()
         location = lecture.timeSlot.location.name
-        url = "https://datsoftlyngby.github.io/soft2020spring/${course.label}/week-${lecture.week.code}/"
+        // url = "https://datsoftlyngby.github.io/soft2020spring/${course.label}/week-${lecture.week.code}/"
         }
       }
     }
@@ -59,7 +59,7 @@ fun Folder.calendarFor(course: Course) {
 
 fun Tree.Trunk.add(course: Course) {
   folder(course.label) {
-    calendarFor(course)
+    if (course.calendar != null) calendarFor(course)
     course.weeks.forEach { week ->
       document("week-${week.code}/${Week.documentName}", week.title) {
         paragraph { text {
@@ -242,7 +242,8 @@ fun Tree.Trunk.add(course: Course) {
           }
         }
       add(course.exam)
-      paragraph("Calendar subscription link: `https:////datsoftlyngby.github.io//soft2020spring//${course.label}//calendar.ical`")
+      if (course.calendar != null)
+          paragraph("Calendar subscription link: `https://datsoftlyngby.github.io/${course.calendar}/${course.label}/calendar.ical`")
       }
     course.curriculum?.let { curriculum ->
       document("curriculum", course.title) {

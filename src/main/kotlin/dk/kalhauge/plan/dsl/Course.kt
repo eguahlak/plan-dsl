@@ -39,6 +39,7 @@ class Course(val title: String, val semester: Semester, val label: String) {
   val teachers = mutableSetOf<Teacher>()
   var location: Location = Somewhere
   val schedule = mutableListOf<TimeSlot>()
+  var calendar: String? = null
 
   val overview = anonymousSection()
 
