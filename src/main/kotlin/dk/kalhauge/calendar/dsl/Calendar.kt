@@ -58,7 +58,7 @@ class Event(
   fun appendTo(builder: StringBuilder) {
     builder.appendCalendarLine("BEGIN:VEVENT")
     builder.appendCalendarLine("UID:${id.toMD5()}")
-    builder.appendCalendarLine("DTSTAMP:${stamp.toCal()}")
+    // builder.appendCalendarLine("DTSTAMP:${stamp.toCal()}")
     builder.appendCalendarLine("DTSTART:${start.toCal()}")
     builder.appendCalendarLine("DTEND:${end.toCal()}")
     builder.appendCalendarLine("SUMMARY:$summary")
