@@ -137,6 +137,7 @@ fun Tree.Trunk.add(course: Course) {
                     when (material.category) {
                       REPOSITORY -> text(":octocat: ") { reference(material.target) }
                       PRESENTATION -> text(":bar__chart: ") { reference(material.target) }
+                      RECORDING -> text(":movie__camera: ") { reference(material.target) }
                       EXERCISE -> text(":pencil: ") { reference(material.target) }
                       LOCAL -> { text(":page__facing__up:") { reference(material.target) } }
                       EXTERNAL -> { text(":globe__with__meridians:") {  reference(material.target) } }

@@ -14,7 +14,7 @@ class Material(
     var toFront: Boolean,
     var active: Boolean
     ) : Targeting {
-  enum class Category { PRESENTATION, EXERCISE, REPOSITORY, LOCAL, EXTERNAL }
+  enum class Category { PRESENTATION, RECORDING, EXERCISE, REPOSITORY, LOCAL, EXTERNAL }
 
   override val hasResource get() = target !is TargetProxy
   }
@@ -44,6 +44,38 @@ fun Lecture.presentation(
   Material(
     TargetProxy(null, label),
     Material.Category.PRESENTATION,
+    toFront = false,
+    active = true
+    ).also {
+    it.build()
+    add(it)
+    }
+
+fun Lecture.recording(
+    address: Address,
+    title: String? = null,
+    label: String? = null,
+    name: String? = null,
+    build: Material.() -> Unit = {}
+    ) =
+  Material(
+      cached(address, title, label, name),
+      Material.Category.RECORDING,
+      toFront = true,
+      active = true
+      )
+    .also {
+    it.build()
+    add(it)
+    }
+
+fun Lecture.recording(
+    label: String,
+    build: Material.() -> Unit = {}
+    ) =
+  Material(
+    TargetProxy(null, label),
+    Material.Category.RECORDING,
     toFront = false,
     active = true
     ).also {
