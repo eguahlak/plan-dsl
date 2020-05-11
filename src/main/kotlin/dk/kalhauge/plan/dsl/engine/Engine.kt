@@ -26,8 +26,8 @@ fun shortLectureLink(lecture: Lecture) =
 fun taxonomiHeader(taxonomy: Taxonomy) = when (taxonomy) {
   KNOWLEDGE -> "/knows/"
   ABILITY -> "is /able/ to"
-  // SKILL -> "have the /skills/ to"
-  SKILL -> "/masters/"
+  SKILL -> "have the /skills/ to"
+  // SKILL -> "/masters/"
   }
 
 fun activityHeader(type: ActivityType) = when (type) {
@@ -240,6 +240,14 @@ fun Tree.Trunk.add(course: Course) {
                 }
               }
             }
+          }
+        }
+      if (course.objectives.isNotEmpty()) {
+        section("Curriculum") {
+          add(course.objective)
+          lectureObjectiveSection(course.lectures, "Knowledge (/Viden/)", KNOWLEDGE)
+          lectureObjectiveSection(course.lectures, "Abilities (/Færdigheder/)", ABILITY)
+          lectureObjectiveSection(course.lectures, "Skills (/Kompetencer/)", SKILL)
           }
         }
       add(course.exam)
