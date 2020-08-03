@@ -36,6 +36,9 @@ class Course(val title: String, val semester: Semester, val label: String) {
   companion object {
     var documentName = "README"
     }
+  init {
+    semester.courses.add(this)
+    }
   val teachers = mutableSetOf<Teacher>()
   var location: Location = Somewhere
   val schedule = mutableListOf<TimeSlot>()

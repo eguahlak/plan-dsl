@@ -7,6 +7,17 @@ enum class WeekDay {
 
 
 class Semester(val year: Int, val term: Term) {
+  companion object {
+    val springSemesters = mutableMapOf<Int, Semester>()
+    val fallSemesters = mutableMapOf<Int, Semester>()
+    }
+  val courses = mutableListOf<Course>()
+  init {
+    when (term) {
+      Term.SPRING -> springSemesters[year] = this
+      Term.FALL -> fallSemesters[year] = this
+      }
+    }
   override fun toString() = when (term) {
     Term.FALL -> "${year} fall"
     Term.SPRING -> "${year} spring"
@@ -14,10 +25,10 @@ class Semester(val year: Int, val term: Term) {
   }
 
 fun spring(year: Int) =
-    Semester(year, Term.SPRING)
+    Semester.springSemesters[year] ?: Semester(year, Term.SPRING)
 
 fun fall(year: Int) =
-    Semester(year, Term.FALL)
+    Semester.fallSemesters[year] ?: Semester(year, Term.FALL)
 
 class TimeOfDay(val minutes: Int) : Comparable<TimeOfDay> {
   override fun toString() = "${(minutes/60).zeroize()}:${(minutes%60).zeroize()}"

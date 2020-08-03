@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'dk.kalhauge'
-version '2.1.30'
+version '2.1.31'
 
 sourceCompatibility = 1.8
 
