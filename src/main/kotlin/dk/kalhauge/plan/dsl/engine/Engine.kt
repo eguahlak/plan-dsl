@@ -446,9 +446,9 @@ fun Document.courseList(trunk: Tree.Trunk? = null, documentName: String = "READM
 
 fun courseLectureLink(lecture: Lecture) =
   if (lecture.week.active) text {
-    reference("../week-${lecture.week.code}/${lecture.course.title}/${Week.documentName}/L${lecture.code}", title = lecture.course.title)
+    reference("../${lecture.course.label}/week-${lecture.week.code}/${Week.documentName}/L${lecture.code}", title = lecture.course.label)
     }
-  else text(lecture.course.title)
+  else text(lecture.course.label)
 
 fun Document.schedule(semester: Semester) {
   val grid = Grid<Int, WeekDay, Lecture>(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY)
@@ -467,6 +467,7 @@ fun Document.schedule(semester: Semester) {
         paragraph("$weekNumber")
         grid.columnKeys.forEach { weekDay ->
           paragraph {
+            text(" ")
             grid[weekNumber, weekDay].forEach { lecture -> add(courseLectureLink(lecture)) }
             }
           }
