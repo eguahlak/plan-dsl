@@ -23,6 +23,12 @@ fun shortLectureLink(lecture: Lecture) =
     }
   else text(lecture.code)
 
+fun courseLectureLink(lecture: Lecture) =
+  if (lecture.week.active) text {
+    reference("../week-${lecture.week.code}/${Week.documentName}/L${lecture.code}", title = lecture.course.title)
+    }
+  else text(lecture.course.title)
+
 fun taxonomiHeader(taxonomy: Taxonomy) = when (taxonomy) {
   KNOWLEDGE -> "/knows/"
   ABILITY -> "is /able/ to"
@@ -445,9 +451,9 @@ fun Document.courseList(trunk: Tree.Trunk? = null, documentName: String = "READM
   }
 
 fun Document.schedule(semester: Semester) {
-  val grid = Grid<Int, WeekDay, String>(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY)
+  val grid = Grid<Int, WeekDay, Lecture>(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY)
   semester.courses.flatMap { it.lectures }.forEach {
-    grid[it.week.number, it.timeSlot.weekDay] = it.course.label
+    grid[it.week.number, it.timeSlot.weekDay] = it
     }
   this.table {
     left("Week")
@@ -459,8 +465,10 @@ fun Document.schedule(semester: Semester) {
     grid.rows.forEach { weekNumber, _ ->
       row {
         paragraph("$weekNumber")
-        grid.columnKeys.forEach {
-          paragraph("${grid[weekNumber, it]}")
+        grid.columnKeys.forEach { weekDay ->
+          paragraph {
+            grid[weekNumber, weekDay].forEach { lecture -> courseLectureLink(lecture) }
+            }
           }
         }
       }
