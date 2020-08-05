@@ -450,11 +450,12 @@ fun courseLectureLink(lecture: Lecture) =
     }
   else text(lecture.course.label)
 
-fun Document.schedule(semester: Semester) {
+fun Document.schedule(semester: Semester, weekNumbers: IntRange? = null) {
   val grid = Grid<Int, WeekDay, Lecture>(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY)
   semester.courses.flatMap { it.lectures }.forEach {
     grid[it.week.number, it.timeSlot.weekDay] = it
     }
+  val numbers = weekNumbers?.toList() ?: grid.rows.keys.toList()
   this.table {
     left("Week")
     center(WeekDay.MONDAY.name)
@@ -462,7 +463,8 @@ fun Document.schedule(semester: Semester) {
     center(WeekDay.WEDNESDAY.name)
     center(WeekDay.THURSDAY.name)
     center(WeekDay.FRIDAY.name)
-    grid.rows.forEach { weekNumber, _ ->
+    //grid.rows.forEach { weekNumber, _ ->
+    numbers.forEach { weekNumber ->
       row {
         paragraph("$weekNumber")
         grid.columnKeys.forEach { weekDay ->
