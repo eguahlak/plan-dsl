@@ -29,3 +29,40 @@ fun localDateTime(year: Int, week: Int, weekDay: WeekDay, time: TimeOfDay): Loca
     .withSecond(0)
     .withNano(0)
   }
+
+class Grid<R, C, V>(vararg keys: C) {
+  val rows = mutableMapOf<R, MutableMap<C, MutableList<V>>>()
+  val columnKeys = mutableListOf<C>(*keys)
+  operator fun set(rowKey: R, columnKey: C, value: V) {
+    val columns = rows[rowKey] ?: mutableMapOf<C, MutableList<V>>().also {
+      rows[rowKey] = it
+      }
+    val values = columns[columnKey] ?: mutableListOf<V>().also {
+      if (!columnKeys.contains(columnKey)) columnKeys.add(columnKey)
+      columns[columnKey] = it
+      }
+    values.add(value)
+    }
+
+  operator fun get(rowKey: R, columnKey: C): List<V> {
+    val columns = rows[rowKey] ?: return emptyList()
+    return columns[columnKey] ?: emptyList()
+    }
+  }
+
+/*
+fun main() {
+  println("${emptyList<String>()}")
+  val table = Table<Int, String, Double>("MA", "TI", "ON", "TO", "FR")
+  table[37, "MA"] = 7.0
+  table[37, "TI"] = 7.1
+  table[37, "TI"] = 8.0
+  table[38, "MA"] = 2.0
+  table[39, "LØ"] = 10.0
+  table.rows.toSortedMap().forEach { rowKey, colums ->
+    print("$rowKey => ")
+    table.columnKeys.forEach { print("$it:${table[rowKey, it]} ") }
+    println()
+    }
+  }
+*/

@@ -443,3 +443,26 @@ fun Document.courseList(trunk: Tree.Trunk? = null, documentName: String = "READM
       }
     }
   }
+
+fun Document.schedule(semester: Semester) {
+  val grid = Grid<Int, WeekDay, String>(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY)
+  semester.courses.flatMap { it.lectures }.forEach {
+    grid[it.week.number, it.timeSlot.weekDay] = it.course.label
+    }
+  this.table {
+    left("Week")
+    center(WeekDay.MONDAY.name)
+    center(WeekDay.TUESDAY.name)
+    center(WeekDay.WEDNESDAY.name)
+    center(WeekDay.THURSDAY.name)
+    center(WeekDay.FRIDAY.name)
+    grid.rows.forEach { weekNumber, columns ->
+      row {
+        paragraph("$weekNumber")
+        columns.forEach { _, courseList ->
+          paragraph("$courseList")
+          }
+        }
+      }
+    }
+  }
