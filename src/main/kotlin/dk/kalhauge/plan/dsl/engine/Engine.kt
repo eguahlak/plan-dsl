@@ -456,11 +456,11 @@ fun Document.schedule(semester: Semester) {
     center(WeekDay.WEDNESDAY.name)
     center(WeekDay.THURSDAY.name)
     center(WeekDay.FRIDAY.name)
-    grid.rows.forEach { weekNumber, columns ->
+    grid.rows.forEach { weekNumber, _ ->
       row {
         paragraph("$weekNumber")
-        columns.forEach { _, courseList ->
-          paragraph("$courseList")
+        grid.columnKeys.forEach {
+          paragraph("${grid[weekNumber, it]}")
           }
         }
       }
