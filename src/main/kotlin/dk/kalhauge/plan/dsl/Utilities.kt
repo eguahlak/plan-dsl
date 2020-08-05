@@ -31,7 +31,7 @@ fun localDateTime(year: Int, week: Int, weekDay: WeekDay, time: TimeOfDay): Loca
   }
 
 class Grid<R, C, V>(vararg keys: C) {
-  val rows = mutableMapOf<R, MutableMap<C, MutableList<V>>>()
+  val rows: SortedMap<R, MutableMap<C, MutableList<V>>> = TreeMap<R, MutableMap<C, MutableList<V>>>()
   val columnKeys = mutableListOf<C>(*keys)
   operator fun set(rowKey: R, columnKey: C, value: V) {
     val columns = rows[rowKey] ?: mutableMapOf<C, MutableList<V>>().also {
