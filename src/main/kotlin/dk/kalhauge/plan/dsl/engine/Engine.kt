@@ -467,7 +467,7 @@ fun Document.schedule(semester: Semester) {
         paragraph("$weekNumber")
         grid.columnKeys.forEach { weekDay ->
           paragraph {
-            grid[weekNumber, weekDay].forEach { lecture -> courseLectureLink(lecture) }
+            grid[weekNumber, weekDay].forEach { lecture -> add(courseLectureLink(lecture)) }
             }
           }
         }
