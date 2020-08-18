@@ -455,7 +455,7 @@ fun courseLectureLink(lecture: Lecture) =
     text("`${lecture.timeSlot.startText}` ")
     reference("../${lecture.course.label}/week-${lecture.week.code}/${Week.documentName}/L${lecture.code}", title = lecture.course.label)
     }
-  else text(lecture.course.label)
+  else text("`${lecture.timeSlot.startText}` ${lecture.course.label}")
 
 fun Document.schedule(semester: Semester, weekNumbers: IntRange? = null) {
   val grid = Grid<Int, WeekDay, Lecture>(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY)
