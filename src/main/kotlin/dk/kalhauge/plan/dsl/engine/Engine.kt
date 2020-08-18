@@ -256,10 +256,16 @@ fun Tree.Trunk.add(course: Course) {
       }
     course.curriculum?.let { curriculum ->
       document("curriculum", course.title) {
+/*
         section("Indhold") { add(curriculum.content) }
         curriculumObjectiveSection(curriculum, KNOWLEDGE, "Viden /knowledge/", "Den studerende har viden om:")
         curriculumObjectiveSection(curriculum, ABILITY, "Færdigheder /abilities/", "Den studerende kan:")
         curriculumObjectiveSection(curriculum, SKILL, "Kompetencer /skills/", "Den studerende kan:")
+*/
+        section("Content") { add(curriculum.content) }
+        curriculumObjectiveSection(curriculum, KNOWLEDGE, "Knowledge /viden/", "The student has knowledge about:")
+        curriculumObjectiveSection(curriculum, ABILITY, "Abilities /færdigheder/", "The student can:")
+        curriculumObjectiveSection(curriculum, SKILL, "Skills /kompetencer/", "The student can:")
         }
       }
     document("summary", "${course.title} - Summary") {
