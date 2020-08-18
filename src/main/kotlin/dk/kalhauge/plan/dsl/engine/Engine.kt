@@ -446,7 +446,7 @@ fun Document.courseList(trunk: Tree.Trunk? = null, documentName: String = "READM
 
 fun courseLectureLink(lecture: Lecture) =
   if (lecture.week.active) text {
-    text("`${lecture.timeSlot.timeText}` ")
+    text("`${lecture.timeSlot.startText}` ")
     reference("../${lecture.course.label}/week-${lecture.week.code}/${Week.documentName}/L${lecture.code}", title = lecture.course.label)
     }
   else text(lecture.course.label)
