@@ -6,7 +6,9 @@ class Week(val flow: Flow, val number: Int, title: String) {
   companion object {
     var documentName = "README"
     }
-  var active = true
+  var active: Boolean = true
+      get() = field && flow.active
+      set(value) { field = value }
   var overview = anonymousSection()
   val lectures = mutableListOf<Lecture>()
   val course get() = flow.course

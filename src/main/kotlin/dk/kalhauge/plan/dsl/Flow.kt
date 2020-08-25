@@ -4,6 +4,7 @@ import dk.kalhauge.document.dsl.Text
 import dk.kalhauge.document.dsl.text
 
 class Flow(val course: Course, val title: String) {
+  var active = true
   var overview = anonymousSection()
   var skills: Text? = null
   val weeks = mutableListOf<Week>()
