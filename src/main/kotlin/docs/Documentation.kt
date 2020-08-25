@@ -8,7 +8,7 @@ import dk.kalhauge.plan.dsl.web
 import kotlin.text.Typography.dollar
 
 fun main() {
-  val VERSION = "2.1.21"
+  val VERSION = "2.1.48"
   val docs = docs("plan-dsl", "Course description specific language") {
     document("README") {
       paragraph("""
@@ -112,14 +112,29 @@ fun main() {
                       }
                     lecture("If more than one lecture that week")
                     }
-                  week(11) // More weeks in that flow
-                  week(12)
+                  week(11) {
+                    active = false // if the week should not be published, true is default
+                    }
+                  week(12) // More weeks in that flow
                   }
                 flow("Title of second flow") {
+                  active = false // if the flow and all its weeks should not be published
+                  overview {
+                    paragraph {
+                      text("This is the full syntax for all anonymous sections:")
+                      list {
+                         paragraph("`overview` in course, flow, week, and lecture")
+                         paragraph("`content` in lecture")
+                         }
+                      }
+                    }
                   week(13) // ... more weeks
                   }
                 attendance(15.0) // attendance gives 15 credits, default is 20
-                exam += "Exam info goes here"
+                exam += "Exam info goes here if short, otherwise use:"
+                exam {
+                  paragraph { /* ... */ }
+                  }
                 
                 // List books if any
                 book(
@@ -205,9 +220,6 @@ fun main() {
           The `document` will already be created by the course or the week.
           
           """.trimIndent())
-        section("The `Course` class") {
-
-          }
         }
       }
     }
