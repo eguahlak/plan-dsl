@@ -8,7 +8,7 @@ import dk.kalhauge.plan.dsl.web
 import kotlin.text.Typography.dollar
 
 fun main() {
-  val VERSION = "2.1.48"
+  val VERSION = "2.1.49"
   val docs = docs("plan-dsl", "Course description specific language") {
     document("README") {
       paragraph("""
@@ -55,7 +55,7 @@ fun main() {
       
               """.trimIndent(), "groovy")
             paragraph("""
-              and you have to modify or create a `~~//.gradle//gradle.properties` file
+              and you have to modify or create a `~/.gradle/gradle.properties` file
               with the following entries:
               """.trimIndent())
             code("""

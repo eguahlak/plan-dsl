@@ -8,7 +8,6 @@ Cphbusiness, and to create consistent sites for students using GitHub Pages.
        * [Code Skelleton](#code-skelleton)
        * [Flows in separate files](#flows-in-separate-files)
      * [Text Types](#text-types)
-     * [The `Course` class](#the-course-class)
 
 # Setup
 
@@ -46,7 +45,7 @@ repositories {
 
 dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-  implementation "dk.kalhauge:plan-dsl:2.1.21"
+  implementation "dk.kalhauge:plan-dsl:2.1.49"
   // ...
   }
 ```
@@ -60,7 +59,7 @@ GITHUB_PACKAGES=a011e...
 ```
 
 Until GitHub removes authentication on packages from public repositories
-you need to get the `GITHUB\_PACKAGES` value from me.  
+you need to get the `GITHUB__PACKAGES` value from me.  
 
 ### Code Skelleton
 
@@ -108,14 +107,29 @@ fun Tree.Trunk.tstCourse() = course("Course Title", spring(2020), "CODE") {
         }
       lecture("If more than one lecture that week")
       }
-    week(11) // More weeks in that flow
-    week(12)
+    week(11) {
+      active = false // if the week should not be published, true is default
+      }
+    week(12) // More weeks in that flow
     }
   flow("Title of second flow") {
+    active = false // if the flow and all its weeks should not be published
+    overview {
+      paragraph {
+        text("This is the full syntax for all anonymous sections:")
+        list {
+           paragraph("`overview` in course, flow, week, and lecture")
+           paragraph("`content` in lecture")
+           }
+        }
+      }
     week(13) // ... more weeks
     }
   attendance(15.0) // attendance gives 15 credits, default is 20
-  exam += "Exam info goes here"
+  exam += "Exam info goes here if short, otherwise use:"
+  exam {
+    paragraph { /* ... */ }
+    }
   
   // List books if any
   book(
@@ -147,7 +161,7 @@ fun main() {
 ### Flows in separate files
 
 It might be convenient to put flow definitions in separate files,
-otherwise the document file will grow very long.  
+otherwise the course file will grow very long.  
 
 In the main file:  
 
@@ -190,5 +204,6 @@ The hierarchy is as follows:
      * Code
    * Code
 
-## The `Course` class
+The `document` will already be created by the course or the week.
+  
 
