@@ -194,63 +194,68 @@ fun Tree.Trunk.add(course: Course) {
           }
         }
       add(course.plan)
-      section("Resources") {
-        var count =
-                 courseResourceSection(course.materials, "Presentations", PRESENTATION)
-        count += courseResourceSection(course.materials, "Exercises", EXERCISE)
-        count += courseResourceSection(course.materials, "Repositories", REPOSITORY)
-        count += courseResourceSection(course.materials, "External Links", EXTERNAL)
-        if (count == 0) paragraph("Selected resources from lectures will show here.")
-        section("Literature") {
-          list {
-            course.books.forEach { book ->
-              list {
-                capture(book.title, label = book.label) {
-                  if (book.subtitle != null) text("/${book.subtitle}/")
-                  if (book.edition != null) text("${book.edition} edition")
-                  text("*${book.authors}* - /${book.editor}/")
-                  if (book.isbn != null) text("`${book.isbn}`")
-                  if (book.url != null) { website(book.url) }
+      if (!course.onlyInfo) {
+        section("Resources") {
+          var count =
+            courseResourceSection(course.materials, "Presentations", PRESENTATION)
+          count += courseResourceSection(course.materials, "Exercises", EXERCISE)
+          count += courseResourceSection(course.materials, "Repositories", REPOSITORY)
+          count += courseResourceSection(course.materials, "External Links", EXTERNAL)
+          if (count == 0) paragraph("Selected resources from lectures will show here.")
+          section("Literature") {
+            list {
+              course.books.forEach { book ->
+                list {
+                  capture(book.title, label = book.label) {
+                    if (book.subtitle != null) text("/${book.subtitle}/")
+                    if (book.edition != null) text("${book.edition} edition")
+                    text("*${book.authors}* - /${book.editor}/")
+                    if (book.isbn != null) text("`${book.isbn}`")
+                    if (book.url != null) {
+                      website(book.url)
+                    }
                   }
                 }
               }
             }
           }
-        }
-      section("Assignments and Credits") {
-        add(course.creditable)
-        table {
-          left("Title")
-          right("Credits")
-          course.creditables.forEach { creditable ->
-            row {
-              when (creditable) {
-                is Assignment -> {
-                  paragraph {
-                    creditable.target?.also {
-                      reference(it, creditable.title)
+          }
+
+        section("Assignments and Credits") {
+          add(course.creditable)
+          table {
+            left("Title")
+            right("Credits")
+            course.creditables.forEach { creditable ->
+              row {
+                when (creditable) {
+                  is Assignment -> {
+                    paragraph {
+                      creditable.target?.also {
+                        reference(it, creditable.title)
                       } ?: add(creditable.title)
                     }
-                  paragraph("${creditable.credits}")
+                    paragraph("${creditable.credits}")
                   }
-                else -> {
-                  paragraph(creditable.title)
-                  paragraph("${creditable.credits}")
+                  else -> {
+                    paragraph(creditable.title)
+                    paragraph("${creditable.credits}")
                   }
                 }
               }
             }
           }
         }
-      if (course.objectives.isNotEmpty()) {
-        section("Curriculum") {
-          add(course.objective)
-          lectureObjectiveSection(course.lectures, "Knowledge (/Viden/)", KNOWLEDGE)
-          lectureObjectiveSection(course.lectures, "Abilities (/Færdigheder/)", ABILITY)
-          lectureObjectiveSection(course.lectures, "Skills (/Kompetencer/)", SKILL)
+        if (course.objectives.isNotEmpty()) {
+          section("Curriculum") {
+            add(course.objective)
+            lectureObjectiveSection(course.lectures, "Knowledge (/Viden/)", KNOWLEDGE)
+            lectureObjectiveSection(course.lectures, "Abilities (/Færdigheder/)", ABILITY)
+            lectureObjectiveSection(course.lectures, "Skills (/Kompetencer/)", SKILL)
           }
         }
-      add(course.exam)
+        add(course.exam)
+      }
       if (course.calendar != null)
           paragraph("Calendar subscription link: `https://datsoftlyngby.github.io/${course.calendar}/${course.label}/calendar.ical`")
       }

@@ -32,7 +32,7 @@ fun Block.Parent.add(anonymousSection: AnonymousSection) {
   anonymousSection.children.forEach { add(it) }
   }
 
-class Course(val title: String, val semester: Semester, val label: String) {
+class Course(val title: String, val semester: Semester, val label: String, val onlyInfo: Boolean = false) {
   companion object {
     var documentName = "README"
     }
@@ -106,18 +106,20 @@ fun course(
     title: String,
     semester: Semester,
     label: String = "",
+    onlyInfo: Boolean = false,
     build: Course.() -> Unit = {}
     ) =
-  Course(title, semester, label).also(build)
+  Course(title, semester, label, onlyInfo).also(build)
 
 
 fun Tree.Trunk.course(
     title: String,
     semester: Semester,
     label: String = "",
+    onlyInfo: Boolean = false,
     build: Course.() -> Unit = {}
     ) =
-  Course(title, semester, label).also {
+  Course(title, semester, label, onlyInfo).also {
     it.build()
     add(it)
     }
