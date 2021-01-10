@@ -67,6 +67,9 @@ fun docs(title: String, subtitle: String, build: Tree.BaseTrunk.() -> Unit = {})
             color: black
             }
           @media screen and (min-width: 64em) {
+            .main-content {
+              max-width: 80rem;
+              }
             .main-content h6 {
               font-size:1.1rem
               }
