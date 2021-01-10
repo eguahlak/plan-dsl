@@ -459,22 +459,29 @@ fun courseLectureLink(lecture: Lecture) =
   if (lecture.week.active) text {
     text("`${lecture.timeSlot.startText}` ")
     reference("../${lecture.course.label}/week-${lecture.week.code}/${Week.documentName}/L${lecture.code}", title = lecture.course.label)
+    text(" `${lecture.timeSlot.endText}` ")
     }
-  else text("`${lecture.timeSlot.startText}` ${lecture.course.label}")
+  else text("`${lecture.timeSlot.startText}` ${lecture.course.label} `${lecture.timeSlot.endText}`")
+
+fun holidayLink(holiday: Holiday) =
+  text("*${holiday.name}*")
 
 fun Document.schedule(semester: Semester, weekNumbers: IntRange? = null) {
-  val grid = Grid<Int, WeekDay, Lecture>(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY)
+  val grid = Grid<Int, WeekDay, Text>(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY)
   semester.courses.flatMap { it.lectures }.forEach {
-    grid[it.week.number, it.timeSlot.weekDay] = it
+    grid[it.week.number, it.timeSlot.weekDay] = courseLectureLink(it)
+    }
+  semester.holidays.forEach {
+    grid[it.weekNumber, it.weekDay] = holidayLink(it)
     }
   val numbers = weekNumbers?.toList() ?: grid.rows.keys.toList()
   this.table {
     left("Week")
-    left(WeekDay.MONDAY.name)
-    left(WeekDay.TUESDAY.name)
-    left(WeekDay.WEDNESDAY.name)
-    left(WeekDay.THURSDAY.name)
-    left(WeekDay.FRIDAY.name)
+    center(WeekDay.MONDAY.name)
+    center(WeekDay.TUESDAY.name)
+    center(WeekDay.WEDNESDAY.name)
+    center(WeekDay.THURSDAY.name)
+    center(WeekDay.FRIDAY.name)
     //grid.rows.forEach { weekNumber, _ ->
     numbers.forEach { weekNumber ->
       row {
@@ -482,9 +489,9 @@ fun Document.schedule(semester: Semester, weekNumbers: IntRange? = null) {
         grid.columnKeys.forEach { weekDay ->
           paragraph {
             text(" ")
-            grid[weekNumber, weekDay].forEachIndexed { index, lecture ->
+            grid[weekNumber, weekDay].forEachIndexed { index, cellText ->
               if (index > 0) text(" <br> ")
-              add(courseLectureLink(lecture)) }
+              add(cellText) }
             }
           }
         }

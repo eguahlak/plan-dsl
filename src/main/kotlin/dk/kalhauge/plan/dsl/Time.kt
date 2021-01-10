@@ -12,6 +12,8 @@ class Semester(val year: Int, val term: Term) {
     val fallSemesters = mutableMapOf<Int, Semester>()
     }
   val courses = mutableListOf<Course>()
+  val holidays = mutableListOf<Holiday>()
+
   init {
     when (term) {
       Term.SPRING -> springSemesters[year] = this
@@ -24,11 +26,17 @@ class Semester(val year: Int, val term: Term) {
     }
   }
 
-fun spring(year: Int) =
-    Semester.springSemesters[year] ?: Semester(year, Term.SPRING)
+fun spring(year: Int, build: Semester.() -> Unit = {}) =
+    (Semester.springSemesters[year] ?: Semester(year, Term.SPRING)).apply(build)
 
-fun fall(year: Int) =
-    Semester.fallSemesters[year] ?: Semester(year, Term.FALL)
+fun fall(year: Int, build: Semester.() -> Unit = {}) =
+    (Semester.fallSemesters[year] ?: Semester(year, Term.FALL)).apply(build)
+
+class Holiday(val title: String, val name: String, val weekNumber: Int, val weekDay: WeekDay)
+
+fun Semester.holiday(title: String, name: String, weekNumber: Int, weekDay: WeekDay) {
+  holidays += Holiday(title, name, weekNumber, weekDay)
+  }
 
 class TimeOfDay(val minutes: Int) : Comparable<TimeOfDay> {
   override fun toString() = "${(minutes/60).zeroize()}:${(minutes%60).zeroize()}"
