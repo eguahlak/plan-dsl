@@ -2,35 +2,8 @@ package dk.kalhauge.plan.dsl
 
 import dk.kalhauge.document.dsl.*
 import dk.kalhauge.document.dsl.Target
-import dk.kalhauge.document.dsl.structure.Block
-import dk.kalhauge.document.dsl.structure.Context
-import dk.kalhauge.document.dsl.structure.FreeContext
 import dk.kalhauge.document.dsl.structure.Tree
 import dk.kalhauge.plan.dsl.engine.add
-
-class AnonymousSection(context: Context?) : Block.BaseParent() {
-  val context = context ?: FreeContext
-
-  override val children = mutableListOf<Block.Child>()
-
-  override val filePath get() = context.filePath
-  override val keyPath get() = context.keyPath
-  override fun register(target: Target) = context.register(target)
-  override fun find(key: String) = context.find(key)
-
-  operator fun invoke(build: AnonymousSection.() -> Unit) { build() }
-  // TODO align with Paragraph.plusAssign
-  operator fun plusAssign(text: Text) { paragraph { add(text) } }
-  operator fun plusAssign(content: String) { plusAssign(text(content)) }
-  }
-
-fun Block.BaseParent.anonymousSection() = AnonymousSection(this)
-
-fun anonymousSection() = AnonymousSection(null)
-
-fun Block.Parent.add(anonymousSection: AnonymousSection) {
-  anonymousSection.children.forEach { add(it) }
-  }
 
 class Course(val title: String, val semester: Semester, val label: String, val onlyInfo: Boolean = false) {
   companion object {
@@ -45,6 +18,7 @@ class Course(val title: String, val semester: Semester, val label: String, val o
   var calendar: String? = null
 
   val overview = anonymousSection()
+  val subjects = mutableListOf<Subject>()
 
   var plan = section("Plan")
   val flows = mutableListOf<Flow>()
@@ -77,6 +51,12 @@ class Course(val title: String, val semester: Semester, val label: String, val o
 
   var curriculum: Curriculum? = null
 
+  fun add(vararg subjects: Subject) {
+    this.subjects.addAll(subjects)
+    }
+  fun add(subjectList: SubjectList) {
+    subjects.addAll(subjectList.subjects)
+    }
 
   fun add(timeSlot: TimeSlot) { schedule += timeSlot }
   fun add(flow: Flow) { flows += flow }

@@ -83,7 +83,13 @@ fun Tree.Trunk.add(course: Course) {
               1 -> paragraph("*Teacher:* ${lecture.teachers[0].name}")
               else -> paragraph("*Teachers:* ${lecture.teachers.joinToString(", ") { it.name }}")
               }
-            add(lecture.overview)
+            add(lecture.overview, "The following subjects are covered in this lecture:")
+            lecture.subjects.forEach { subject ->
+              paragraph {
+                text { bold(subject.title) }
+                }
+              add(subject.description)
+              }
             section("Objectives") {
               add(lecture.objective)
               list {

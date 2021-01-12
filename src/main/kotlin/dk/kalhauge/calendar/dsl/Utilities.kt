@@ -1,5 +1,7 @@
 package dk.kalhauge.calendar.dsl
 
+import dk.kalhauge.util.toMD5
+
 fun String.chuncked(count: Int): List<String> {
     val bytes = Charsets.UTF_8.encode(this)
     val size = bytes.limit()
@@ -16,3 +18,7 @@ fun String.chuncked(count: Int): List<String> {
         }
     return list
     }
+
+fun String.labelized() =
+  this.split(" +".toRegex()).map { it.toUpperCase()[0] }.joinToString(separator = "")+(this.toMD5())
+

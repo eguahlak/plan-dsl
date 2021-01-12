@@ -1,5 +1,6 @@
 package dk.kalhauge.plan.dsl
 
+import dk.kalhauge.document.dsl.anonymousSection
 import dk.kalhauge.document.dsl.paragraph
 import java.time.LocalDateTime
 
@@ -24,6 +25,7 @@ class Lecture(val week: Week, val title: String) {
   var note = " "
   val workLoad: Double get() = activities.map { it.load }.sum() + timeSlot.load
   var overview = anonymousSection()
+  val subjects = mutableListOf<Subject>()
 
   var objective = paragraph()
   val objectives = mutableListOf<Objective>()
@@ -45,6 +47,9 @@ class Lecture(val week: Week, val title: String) {
     week.add(this)
     }
 
+  fun add(vararg subjects: Subject) {
+    this.subjects.addAll(subjects)
+    }
   fun add(objective: Objective) { objectives += objective }
   fun add(activity: Activity) {
     course.register(activity)
@@ -59,6 +64,7 @@ class Lecture(val week: Week, val title: String) {
     teachers += teacher
     course.add(teacher)
     }
+
 
   data class Load(
       var presence: Double = 0.0,
@@ -76,7 +82,7 @@ class Lecture(val week: Week, val title: String) {
     }
 
   fun loads(): Load {
-    val load = Load(presence = timeSlot.load);
+    val load = Load(presence = timeSlot.load)
     activities.forEach {
       when (it.type) {
         ActivityType.READ -> load.read += it.load

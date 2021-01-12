@@ -1,6 +1,7 @@
 package dk.kalhauge.plan.dsl
 
 import dk.kalhauge.document.dsl.Text
+import dk.kalhauge.document.dsl.anonymousSection
 import dk.kalhauge.document.dsl.text
 
 class Flow(val course: Course, val title: String) {
