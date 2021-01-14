@@ -212,7 +212,8 @@ fun Tree.Trunk.add(course: Course) {
             list {
               course.books.forEach { book ->
                 list {
-                  capture(book.title, label = book.label) {
+                  val bookTitle = if (book.optional) "${book.title} /(optional)/" else book.title
+                  capture(bookTitle, label = book.label) {
                     if (book.subtitle != null) text("/${book.subtitle}/")
                     if (book.edition != null) text("${book.edition} edition")
                     text("*${book.authors}* - /${book.editor}/")

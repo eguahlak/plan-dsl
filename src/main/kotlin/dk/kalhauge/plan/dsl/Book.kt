@@ -15,6 +15,8 @@ class Book(
     val url: Address.Web?,
     val authors: String?
     ) {
+  var optional = false
+  var note: String? = null
   }
 
 fun Course.book(
@@ -25,8 +27,10 @@ fun Course.book(
     edition: String? = null,
     editor: String? = null,
     url: Address.Web? = null,
-    authors: String? = null
+    authors: String? = null,
+    build: Book.() -> Unit = {}
     ) =
   Book(this, title, label, subtitle, isbn, edition, editor, url, authors).also {
+    it.build()
     add(it)
     }
