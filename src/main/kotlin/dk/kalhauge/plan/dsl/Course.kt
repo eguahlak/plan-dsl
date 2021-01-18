@@ -8,6 +8,7 @@ import dk.kalhauge.plan.dsl.engine.add
 class Course(val title: String, val semester: Semester, val label: String, val onlyInfo: Boolean = false) {
   companion object {
     var documentName = "README"
+    var graphName = "TOPICS"
     }
   init {
     semester.courses.add(this)
@@ -18,7 +19,7 @@ class Course(val title: String, val semester: Semester, val label: String, val o
   var calendar: String? = null
 
   val overview = anonymousSection()
-  val subjects = mutableListOf<Subject>()
+  val topics = mutableListOf<Topic>()
 
   var plan = section("Plan")
   val flows = mutableListOf<Flow>()
@@ -51,11 +52,11 @@ class Course(val title: String, val semester: Semester, val label: String, val o
 
   var curriculum: Curriculum? = null
 
-  fun add(vararg subjects: Subject) {
-    this.subjects.addAll(subjects)
+  fun add(vararg topics: Topic) {
+    this.topics.addAll(topics)
     }
-  fun add(subjectList: SubjectList) {
-    subjects.addAll(subjectList.subjects)
+  fun add(topicList: TopicList) {
+    topics.addAll(topicList.topics)
     }
 
   fun add(timeSlot: TimeSlot) { schedule += timeSlot }

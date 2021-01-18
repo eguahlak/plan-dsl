@@ -18,7 +18,3 @@ fun String.chuncked(count: Int): List<String> {
         }
     return list
     }
-
-fun String.labelized() =
-  this.split(" +".toRegex()).map { it.toUpperCase()[0] }.joinToString(separator = "")+(this.toMD5())
-

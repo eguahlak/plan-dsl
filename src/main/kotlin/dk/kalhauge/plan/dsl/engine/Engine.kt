@@ -3,6 +3,7 @@ package dk.kalhauge.plan.dsl.engine
 import dk.kalhauge.calendar.dsl.calendar
 import dk.kalhauge.calendar.dsl.event
 import dk.kalhauge.document.dsl.*
+import dk.kalhauge.document.dsl.graphs.graph
 import dk.kalhauge.document.dsl.structure.Block
 import dk.kalhauge.document.dsl.structure.Tree
 import dk.kalhauge.plan.dsl.*
@@ -164,6 +165,21 @@ fun Tree.Trunk.add(course: Course) {
           }
         }
       add(course.overview)
+      if (course.topics.isNotEmpty()) {
+        graph("${course.title} topics", "${Course.graphName}", "GR") {
+          course.topics.forEach { topic ->
+            when (topic.category) {
+              Topic.Category.TOOL -> box(topic.title)
+              else -> ellipse(topic.title)
+              }
+            }
+          course.topics.forEach { topic ->
+            topic.prerequisites.forEach { prerequisite ->
+              this[topic.title]?.edge(this[prerequisite.topic.title])
+              }
+            }
+          }
+        }
       course.plan {
         course.flows.forEach { flow ->
           section(flow.title) {
