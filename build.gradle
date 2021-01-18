@@ -1,13 +1,13 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.30-M1'
     id 'maven-publish'
 }
 
 group 'dk.kalhauge'
 version '2.3.4'
 
-sourceCompatibility = 1.13
+sourceCompatibility = 13
 
 repositories {
     mavenLocal()
@@ -28,7 +28,7 @@ configurations {
     }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk13"
     api "dk.kalhauge:document-dsl:2.2.8"
     documentDsl "dk.kalhauge:document-dsl:2.2.8"
     testImplementation group: 'junit', name: 'junit', version: '4.12'
