@@ -166,7 +166,7 @@ fun Tree.Trunk.add(course: Course) {
         }
       add(course.overview)
       if (course.topics.isNotEmpty()) {
-        graph("${course.title} topics", "${Course.graphName}", "GR") {
+        graph("${course.title} topics", "${Course.graphName}") {
           course.topics.forEach { topic ->
             when (topic.category) {
               Topic.Category.TOOL -> box(topic.title)

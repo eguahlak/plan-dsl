@@ -1,8 +1,6 @@
 package dk.kalhauge.plan.dsl
 
 import dk.kalhauge.document.dsl.Address
-import dk.kalhauge.document.dsl.text
-import javax.xml.soap.Text
 
 class Book(
     val course: Course,
