@@ -141,7 +141,7 @@ private fun Tree.Trunk.tstCourse() = course("Algorithms and Datastructures", spr
 
 
 private fun main() {
-  val docs = docs("Test", "Cphbusiness SOFT 2020 Spring") {
+  val docs = docs("Test", "Cphbusiness SOFT 2021 Spring") {
     tstCourse()
     }
   GfmHandler(FileHost(conf), docs).handle(printTargets = true)
