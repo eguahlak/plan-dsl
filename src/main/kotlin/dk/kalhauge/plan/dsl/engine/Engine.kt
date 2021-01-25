@@ -3,6 +3,10 @@ package dk.kalhauge.plan.dsl.engine
 import dk.kalhauge.calendar.dsl.calendar
 import dk.kalhauge.calendar.dsl.event
 import dk.kalhauge.document.dsl.*
+import dk.kalhauge.document.dsl.graphs.Cluster
+import dk.kalhauge.document.dsl.graphs.Cluster.Style.*
+import dk.kalhauge.document.dsl.graphs.Edge
+import dk.kalhauge.document.dsl.graphs.Edge.ArrowHead.*
 import dk.kalhauge.document.dsl.graphs.graph
 import dk.kalhauge.document.dsl.structure.Block
 import dk.kalhauge.document.dsl.structure.Tree
@@ -10,6 +14,8 @@ import dk.kalhauge.plan.dsl.*
 import dk.kalhauge.plan.dsl.ActivityType.*
 import dk.kalhauge.plan.dsl.Material.Category.*
 import dk.kalhauge.plan.dsl.Taxonomy.*
+import dk.kalhauge.plan.dsl.Topic.Type.*
+import dk.kalhauge.plan.dsl.Topic.Association.Type.*
 
 fun lectureLink(lecture: Lecture) =
   if (lecture.week.active) text {
@@ -168,14 +174,19 @@ fun Tree.Trunk.add(course: Course) {
       if (course.topics.isNotEmpty()) {
         graph("${course.title} topics", "${Course.graphName}") {
           course.topics.forEach { topic ->
-            when (topic.category) {
-              Topic.Category.TOOL -> box(topic.title)
+            when (topic.type) {
+              TOOL -> box(topic.title)
+              RECAP -> ellipse(title, DASHED)
               else -> ellipse(topic.title)
               }
             }
           course.topics.forEach { topic ->
-            topic.prerequisites.forEach { prerequisite ->
-              this[topic.title]?.edge(this[prerequisite.topic.title])
+            topic.associations.forEach { association ->
+              when (association.type) {
+                IMPLEMENTS -> this[topic.title]?.edge(this[association.topic.title], DASHED, OPEN_TRIANGLE)
+                USES -> this[topic.title]?.edge(this[association.topic.title], SOLID, WEE)
+                DEPENDS_ON -> this[topic.title]?.edge(this[association.topic.title], DASHED, WEE)
+                }
               }
             }
           }
