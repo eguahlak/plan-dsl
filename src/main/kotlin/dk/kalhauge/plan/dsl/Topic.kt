@@ -40,6 +40,7 @@ abstract class TopicList() {
 
 object EmptyTopicList : TopicList()
 
+
 class Topic(val title: String, val type: Type) {
   enum class Type { TOOL, CONCEPT, THEORY, PRACTICE, RECAP }
 
