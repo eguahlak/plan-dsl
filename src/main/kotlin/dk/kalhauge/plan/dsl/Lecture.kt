@@ -4,7 +4,7 @@ import dk.kalhauge.document.dsl.anonymousSection
 import dk.kalhauge.document.dsl.paragraph
 import java.time.LocalDateTime
 
-class Lecture(val week: Week, val title: String) {
+class Lecture(val week: Week, val title: String) : Scheduleable {
   val teachers = mutableListOf<Teacher>()
   fun teachers(vararg teachers: Teacher) {
     teachers.forEach { add(it) }

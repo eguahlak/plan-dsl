@@ -10,6 +10,9 @@ class Flow(val course: Course, val title: String) {
   var skills: Text? = null
   val weeks = mutableListOf<Week>()
   val lectures get() = weeks.flatMap { it.lectures }
+  var label: String? = null
+
+  val code: String get() = label ?: course.label
 
   init {
     course.add(this)

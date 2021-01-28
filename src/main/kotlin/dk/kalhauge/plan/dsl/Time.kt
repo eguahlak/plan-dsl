@@ -32,7 +32,9 @@ fun spring(year: Int, build: Semester.() -> Unit = {}) =
 fun fall(year: Int, build: Semester.() -> Unit = {}) =
     (Semester.fallSemesters[year] ?: Semester(year, Term.FALL)).apply(build)
 
-class Holiday(val title: String, val name: String, val weekNumber: Int, val weekDay: WeekDay)
+interface Scheduleable
+
+class Holiday(val title: String, val name: String, val weekNumber: Int, val weekDay: WeekDay) : Scheduleable
 
 fun Semester.holiday(title: String, name: String, weekNumber: Int, weekDay: WeekDay) {
   holidays += Holiday(title, name, weekNumber, weekDay)

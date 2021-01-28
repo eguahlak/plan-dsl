@@ -489,24 +489,29 @@ fun Document.courseList(trunk: Tree.Trunk? = null, documentName: String = "READM
     }
   }
 
-fun courseLectureLink(lecture: Lecture) =
-  if (lecture.week.active) text {
-    text("`${lecture.timeSlot.startText}` ")
-    reference("../${lecture.course.label}/week-${lecture.week.code}/${Week.documentName}/L${lecture.code}", title = lecture.course.label)
-    text(" `${lecture.timeSlot.endText}` ")
+fun scheduleableLink(scheduleabe: Scheduleable) =
+  when (scheduleabe) {
+    is Lecture -> {
+      if (scheduleabe.week.active) text {
+        text("`${scheduleabe.timeSlot.startText}` ")
+        reference("../${scheduleabe.course.label}/week-${scheduleabe.week.code}/${Week.documentName}/L${scheduleabe.code}", title = scheduleabe.week.flow.code)
+        text(" `${scheduleabe.timeSlot.endText}` ")
+        }
+      else text("`${scheduleabe.timeSlot.startText}` ${scheduleabe.week.flow.code} `${scheduleabe.timeSlot.endText}`")
+      }
+    is Holiday -> {
+      text("*${scheduleabe.name}*")
+      }
+    else -> text("Unknown Scheduleable")
     }
-  else text("`${lecture.timeSlot.startText}` ${lecture.course.label} `${lecture.timeSlot.endText}`")
-
-fun holidayLink(holiday: Holiday) =
-  text("*${holiday.name}*")
 
 fun Document.schedule(semester: Semester, weekNumbers: IntRange? = null) {
-  val grid = Grid<Int, WeekDay, Text>(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY)
+  val grid = Grid<Int, WeekDay, Scheduleable>(WeekDay.MONDAY, WeekDay.TUESDAY, WeekDay.WEDNESDAY, WeekDay.THURSDAY, WeekDay.FRIDAY)
   semester.courses.flatMap { it.lectures }.forEach {
-    grid[it.week.number, it.timeSlot.weekDay] = courseLectureLink(it)
+    grid[it.week.number, it.timeSlot.weekDay] = it
     }
   semester.holidays.forEach {
-    grid[it.weekNumber, it.weekDay] = holidayLink(it)
+    grid[it.weekNumber, it.weekDay] = it
     }
   val numbers = weekNumbers?.toList() ?: grid.rows.keys.toList()
   this.table {
@@ -523,9 +528,10 @@ fun Document.schedule(semester: Semester, weekNumbers: IntRange? = null) {
         grid.columnKeys.forEach { weekDay ->
           paragraph {
             text(" ")
-            grid[weekNumber, weekDay].forEachIndexed { index, cellText ->
+            grid[weekNumber, weekDay].forEachIndexed { index, scheduleable ->
               if (index > 0) text(" <br> ")
-              add(cellText) }
+              add(scheduleableLink(scheduleable))
+              }
             }
           }
         }
