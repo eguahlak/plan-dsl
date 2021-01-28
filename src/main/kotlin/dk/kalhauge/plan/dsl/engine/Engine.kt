@@ -495,7 +495,8 @@ fun scheduleableLink(scheduleabe: Scheduleable) =
       if (scheduleabe.week.active) text {
         text("`${scheduleabe.timeSlot.startText}` ")
         reference("../${scheduleabe.course.label}/week-${scheduleabe.week.code}/${Week.documentName}/L${scheduleabe.code}", title = scheduleabe.week.flow.code)
-        text(" `${scheduleabe.timeSlot.endText}` ")
+        text(" `${scheduleabe.timeSlot.endText}`")
+        if (scheduleabe.flowName != null) text("<br>/${scheduleabe.flowName}/")
         }
       else text("`${scheduleabe.timeSlot.startText}` ${scheduleabe.week.flow.code} `${scheduleabe.timeSlot.endText}`")
       }

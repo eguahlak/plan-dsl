@@ -4,7 +4,7 @@ import dk.kalhauge.document.dsl.Text
 import dk.kalhauge.document.dsl.anonymousSection
 import dk.kalhauge.document.dsl.text
 
-class Flow(val course: Course, val title: String) {
+class Flow(val course: Course, val title: String, val name: String? = null) {
   var active = true
   var overview = anonymousSection()
   var skills: Text? = null
@@ -29,5 +29,5 @@ class Flow(val course: Course, val title: String) {
 
   }
 
-fun Course.flow(title: String, build: Flow.() -> Unit = {}) =
-  Flow(this, title).also(build)
+fun Course.flow(title: String, name: String? = null, build: Flow.() -> Unit = {}) =
+  Flow(this, title, name).also(build)

@@ -32,9 +32,15 @@ fun spring(year: Int, build: Semester.() -> Unit = {}) =
 fun fall(year: Int, build: Semester.() -> Unit = {}) =
     (Semester.fallSemesters[year] ?: Semester(year, Term.FALL)).apply(build)
 
-interface Scheduleable
+interface Scheduleable {
+  //fun equals(other: Scheduleable): Boolean
+  }
 
-class Holiday(val title: String, val name: String, val weekNumber: Int, val weekDay: WeekDay) : Scheduleable
+class Holiday(val title: String, val name: String, val weekNumber: Int, val weekDay: WeekDay) : Scheduleable {
+  override fun equals(other: Any?) =
+      if (other !is Holiday) false
+      else this.name == other.name && this.weekNumber == other.weekNumber && this.weekDay == other.weekDay
+  }
 
 fun Semester.holiday(title: String, name: String, weekNumber: Int, weekDay: WeekDay) {
   holidays += Holiday(title, name, weekNumber, weekDay)

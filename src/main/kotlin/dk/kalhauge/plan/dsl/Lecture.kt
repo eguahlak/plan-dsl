@@ -10,6 +10,7 @@ class Lecture(val week: Week, val title: String) : Scheduleable {
     teachers.forEach { add(it) }
     }
   val course get() = week.course
+  val flowName = week.flow.name
 
   var isAsScheduled: Boolean = true
     private set
@@ -46,6 +47,10 @@ class Lecture(val week: Week, val title: String) : Scheduleable {
   init {
     week.add(this)
     }
+
+  override fun equals(other: Any?) =
+      if (other !is Lecture) false
+      else this.week.number == other.week.number && this.title == other.title && this.timeSlot.timeText == other.timeSlot.timeText
 
   fun add(vararg topics: Topic) {
     this.subjects.addAll(topics)

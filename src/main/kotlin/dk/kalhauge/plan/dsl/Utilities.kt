@@ -5,7 +5,10 @@ import dk.kalhauge.util.of
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.WeekFields
-import java.util.*
+import java.util.Locale
+import java.util.SortedMap
+import java.util.TreeMap
+import kotlin.collections.Iterable.*
 
 fun String.last(count: Int) = this.substring(this.length - count)
 
@@ -42,7 +45,8 @@ class Grid<R, C, V>(vararg keys: C) {
       if (!columnKeys.contains(columnKey)) columnKeys.add(columnKey)
       columns[columnKey] = it
       }
-    if (allowDublicates || !values.contains(value)) values.add(value)
+    //val vs = values.any { it!!.equals(value) }
+    if (allowDublicates || !values.any { it!! == value }) values.add(value)
     }
 
   operator fun get(rowKey: R, columnKey: C): List<V> {
