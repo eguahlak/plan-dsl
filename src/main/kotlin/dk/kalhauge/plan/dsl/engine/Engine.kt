@@ -146,6 +146,7 @@ fun Tree.Trunk.add(course: Course) {
               list {
                 lecture.materials.forEach { material ->
                   paragraph {
+
                     when (material.category) {
                       REPOSITORY -> text(":octocat: ") { reference(material.target) }
                       PRESENTATION -> text(":bar__chart: ") { reference(material.target) }
