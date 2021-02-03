@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'dk.kalhauge'
-version '2.3.10'
+version '2.3.11'
 
 sourceCompatibility = 13
 
@@ -29,8 +29,8 @@ configurations {
 
 dependencies {
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk13"
-    api "dk.kalhauge:document-dsl:2.2.12"
-    documentDsl "dk.kalhauge:document-dsl:2.2.12"
+    api "dk.kalhauge:document-dsl:2.2.13"
+    documentDsl "dk.kalhauge:document-dsl:2.2.13"
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
 

@@ -3,10 +3,9 @@ package dk.kalhauge.plan.dsl.engine
 import dk.kalhauge.calendar.dsl.calendar
 import dk.kalhauge.calendar.dsl.event
 import dk.kalhauge.document.dsl.*
-import dk.kalhauge.document.dsl.graphs.Cluster
 import dk.kalhauge.document.dsl.graphs.Cluster.Style.*
-import dk.kalhauge.document.dsl.graphs.Edge
 import dk.kalhauge.document.dsl.graphs.Edge.ArrowHead.*
+import dk.kalhauge.document.dsl.graphs.RGB
 import dk.kalhauge.document.dsl.graphs.graph
 import dk.kalhauge.document.dsl.structure.Block
 import dk.kalhauge.document.dsl.structure.Tree
@@ -91,7 +90,7 @@ fun Tree.Trunk.add(course: Course) {
               else -> paragraph("*Teachers:* ${lecture.teachers.joinToString(", ") { it.name }}")
               }
             add(lecture.overview, "The following subjects are covered in this lecture:")
-            lecture.subjects.forEach { subject ->
+            lecture.topics.forEach { subject ->
               paragraph {
                 text { bold(subject.title) }
                 }
@@ -176,8 +175,10 @@ fun Tree.Trunk.add(course: Course) {
           course.topics.forEach { topic ->
             when (topic.type) {
               TOOL -> box(topic.title)
-              RECAP -> ellipse(title, DASHED)
-              else -> ellipse(topic.title)
+              RECAP -> ellipse(topic.title, DASHED)
+              CONCEPT -> ellipse(topic.title, SOLID, RGB.BLUE, RGB.BLUE)
+              PRACTICE -> box(topic.title, DOTTED)
+              THEORY -> ellipse(topic.title, SOLID, RGB.RED, RGB.RED)
               }
             }
           course.topics.forEach { topic ->

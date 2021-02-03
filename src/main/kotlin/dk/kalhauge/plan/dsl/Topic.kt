@@ -8,38 +8,35 @@ abstract class TopicList() {
 
   fun tool(title: String, build: Topic.() -> Unit = {}) =
     Topic(title, Topic.Type.TOOL).also {
-      topics.add(it)
       it.build()
+      topics.add(it)
       }
 
   fun concept(title: String, build: Topic.() -> Unit = {}) =
     Topic(title, Topic.Type.CONCEPT).also {
-      topics.add(it)
       it.build()
+      topics.add(it)
       }
 
   fun theory(title: String, build: Topic.() -> Unit = {}) =
     Topic(title, Topic.Type.THEORY).also {
-      topics.add(it)
       it.build()
+      topics.add(it)
       }
 
   fun practice(title: String, build: Topic.() -> Unit = {}) =
     Topic(title, Topic.Type.PRACTICE).also {
-      topics.add(it)
       it.build()
+      topics.add(it)
       }
 
   fun recap(title: String, build: Topic.() -> Unit = {}) =
     Topic(title, Topic.Type.RECAP).also {
-      topics.add(it)
       it.build()
+      topics.add(it)
       }
 
   }
-
-object EmptyTopicList : TopicList()
-
 
 class Topic(val title: String, val type: Type) {
   enum class Type { TOOL, CONCEPT, THEORY, PRACTICE, RECAP }

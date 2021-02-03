@@ -26,7 +26,7 @@ class Lecture(val week: Week, val title: String) : Scheduleable {
   var note = " "
   val workLoad: Double get() = activities.map { it.load }.sum() + timeSlot.load
   var overview = anonymousSection()
-  val subjects = mutableListOf<Topic>()
+  val topics = mutableListOf<Topic>()
 
   var objective = paragraph()
   val objectives = mutableListOf<Objective>()
@@ -53,7 +53,7 @@ class Lecture(val week: Week, val title: String) : Scheduleable {
       else this.week.number == other.week.number && this.title == other.title && this.timeSlot.timeText == other.timeSlot.timeText
 
   fun add(vararg topics: Topic) {
-    this.subjects.addAll(topics)
+    this.topics.addAll(topics)
     }
   fun add(objective: Objective) { objectives += objective }
   fun add(activity: Activity) {
