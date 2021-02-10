@@ -66,7 +66,7 @@ fun Folder.calendarFor(course: Course) {
 fun Tree.Trunk.add(course: Course) {
   folder(course.label) {
     if (course.calendar != null) calendarFor(course)
-    course.weeks.forEach { week ->
+    course.weeks.values.forEach { week ->
       document("week-${week.code}/${Week.documentName}", week.title) {
         paragraph { text {
           week.previous?.let { prev ->

@@ -22,9 +22,8 @@ class Flow(val course: Course, val title: String, val name: String? = null) {
     skills = text().also(build)
     }
 
-  fun add(week: Week): Int {
-    weeks += week
-    return course.add(week)
+  fun add(week: Week) {
+    weeks += course.add(week)
     }
 
   }

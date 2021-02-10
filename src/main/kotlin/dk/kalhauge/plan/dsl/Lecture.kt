@@ -4,7 +4,7 @@ import dk.kalhauge.document.dsl.anonymousSection
 import dk.kalhauge.document.dsl.paragraph
 import java.time.LocalDateTime
 
-class Lecture(val week: Week, val title: String) : Scheduleable {
+class Lecture(val week: Week, val title: String) : Scheduleable, Comparable<Lecture> {
   val teachers = mutableListOf<Teacher>()
   fun teachers(vararg teachers: Teacher) {
     teachers.forEach { add(it) }
@@ -97,6 +97,9 @@ class Lecture(val week: Week, val title: String) : Scheduleable {
       }
     return load
     }
+
+  override fun compareTo(other: Lecture) = this.timeSlot.compareTo(other.timeSlot)
+
   }
 
 fun Week.lecture(title: String, build: Lecture.() -> Unit = {}) =

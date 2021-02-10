@@ -69,7 +69,7 @@ class TimeSlot(
     val end: TimeOfDay,
     val location: Location,
     load: Double? = null
-    ) {
+    ) : Comparable<TimeSlot> {
   constructor(weekDay: WeekDay, interval: Pair<String, String>, location: Location, load: Double? = null) :
       this(weekDay, interval.first.toTimeOfDay(), interval.second.toTimeOfDay(), location, load)
   companion object {
@@ -95,6 +95,13 @@ class TimeSlot(
     }
 
   override fun toString() = "*Time*: $dayText $timeText *Location*: $location"
+  override fun compareTo(other: TimeSlot) =
+    when (this.weekDay.compareTo(other.weekDay)) {
+      -1 -> -1
+      0 -> this.start.compareTo(other.start)
+      1 -> 1
+      else -> 0
+      }
   }
 
 val TBD = TimeSlot(WeekDay.TBD, "00:00" to "00:00", Somewhere, 3.5)

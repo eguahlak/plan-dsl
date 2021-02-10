@@ -4,6 +4,7 @@ import dk.kalhauge.document.dsl.*
 import dk.kalhauge.document.dsl.Target
 import dk.kalhauge.document.dsl.structure.Tree
 import dk.kalhauge.plan.dsl.engine.add
+import java.util.*
 
 class Course(val title: String, val semester: Semester, val label: String, val onlyInfo: Boolean = false) {
   companion object {
@@ -45,8 +46,8 @@ class Course(val title: String, val semester: Semester, val label: String, val o
   val creditables = mutableListOf<Creditable>()
 
   var nextLectureNumber = 0
-  val weeks = mutableListOf<Week>()
-  val lectures get() = weeks.flatMap { it.lectures }
+  val weeks = TreeMap<Int, Week>()
+  val lectures get() = weeks.values.flatMap { it.lectures }
 
   val exam = section("Exam")
 
@@ -61,11 +62,23 @@ class Course(val title: String, val semester: Semester, val label: String, val o
 
   fun add(timeSlot: TimeSlot) { schedule += timeSlot }
   fun add(flow: Flow) { flows += flow }
-  fun add(week: Week): Int {
-    weeks += week
-    return weeks.size - 1
+
+  fun add(week: Week): Week {
+    val original = weeks[week.number]
+    if (original != null) {
+      original.expandWith(week)
+      return original
+      }
+    else {
+      weeks[week.number] = week
+      return week
+      }
     }
-  fun getWeek(index: Int) = if (index < 0 || weeks.size <= index ) null else weeks[index]
+
+  fun getWeekBefore(week: Week) = weeks.lowerEntry(week.number)?.value
+
+  fun getWeekAfter(week: Week) = weeks.higherEntry(week.number)?.value
+
   fun add(objective: Objective) {
     objective.key?.let { objectives[it] = objective }
     }

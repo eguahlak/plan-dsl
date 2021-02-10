@@ -14,9 +14,8 @@ class Week(val flow: Flow, val number: Int, title: String) {
   val lectures = mutableListOf<Lecture>()
   val course get() = flow.course
   val code get() = if (number < 10) "0$number" else "$number"
-  val index: Int
-  val previous get() = course.getWeek(index - 1)
-  val next get() = course.getWeek(index + 1)
+  val previous: Week? get() = course.getWeekBefore(this)
+  val next: Week? get() = course.getWeekAfter(this)
   var title: String = title
     get() = "Week $number - "+when {
       field.isNotBlank() -> field
@@ -25,10 +24,16 @@ class Week(val flow: Flow, val number: Int, title: String) {
       }
 
   init {
-    index = flow.add(this)
+    flow.add(this)
     }
 
   fun add(lecture: Lecture) { lectures += lecture }
+
+  fun expandWith(other: Week) {
+    other.overview.children.forEach { overview.add(it) }
+    other.lectures.forEach { add(it) }
+    lectures.sort()
+    }
 
   }
 
