@@ -23,9 +23,11 @@ class Week(val flow: Flow, val number: Int, title: String) {
       else -> ""
       }
 
+  /*
   init {
     flow.add(this)
     }
+   */
 
   fun add(lecture: Lecture) { lectures += lecture }
 
@@ -38,4 +40,7 @@ class Week(val flow: Flow, val number: Int, title: String) {
   }
 
 fun Flow.week(number: Int, title: String = "", build: Week.() -> Unit = {}) =
-    Week(this, number, title).also(build)
+    Week(this, number, title).also{
+      it.build()
+      add(it)
+      }
